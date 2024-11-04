@@ -1,4 +1,5 @@
-# Nu primesc notă pentru că nu am pus titlu și descriere
+# Memory Game: Two by two
+Ajută-l pe Noe să salveze animalele înainte ca potopul să înceapă! Găsește perechile de animale și testează-ți cunoștințele despre ele într-o cursă contra cronometru. Cu fiecare pereche găsită, răspunde corect la întrebări pentru a le păstra în siguranță pe arcă. Dar ai grijă - un răspuns greșit va reamesteca toate cărțile!
 
 ### Important!
 Aveți voie cu cod generat de modele de limbaj la care nu ați contribuit semnificativ doar în folder-ul `generated`.
