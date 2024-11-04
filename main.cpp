@@ -1,4 +1,4 @@
-#include "C:\\Users\\Home pc\\CLionProjects\\Two-by-two\\include\\headers\\game.h"
+#include "../headers/game.h"
 
 int main()
 {
