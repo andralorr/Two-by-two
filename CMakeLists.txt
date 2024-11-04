@@ -54,6 +54,12 @@ add_executable(${PROJECT_NAME}
     main.cpp
     generated/src/Helper.cpp
     env_fixes.h
+        include/headers/card.h
+        include/headers/question.h
+        include/headers/game.h
+        include/sources/card.cpp
+        include/sources/game.cpp
+        include/sources/question.cpp
 )
 
 include(cmake/CompilerFlags.cmake)
@@ -66,6 +72,8 @@ target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE generated/include)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SFML_SOURCE_DIR}/include)
 target_link_directories(${PROJECT_NAME} PRIVATE ${SFML_BINARY_DIR}/lib)
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system Threads::Threads)
+target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE include/headers)
+target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE include/sources)
 
 if(APPLE)
 elseif(UNIX)
@@ -94,6 +102,6 @@ endif()
 
 
 include(cmake/CopyHelper.cmake)
-copy_files(FILES tastatura.txt)
+# copy_files(FILES tastatura.txt)
 # copy_files(FILES tastatura.txt config.json DIRECTORY images sounds)
 # copy_files(DIRECTORY images sounds)
