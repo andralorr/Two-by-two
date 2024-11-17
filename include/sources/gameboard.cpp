@@ -61,9 +61,6 @@ void GameBoard::render() {
     for (auto& card : cards) {
         card.draw(window);
     }
-    if (currentQuestion) {
-        drawQuestion(*currentQuestion);
-    }
     window.display();
 }
 
