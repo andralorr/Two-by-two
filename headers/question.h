@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include <SFML/Graphics.hpp>
+
 class Question {
 private:
     std::string question;

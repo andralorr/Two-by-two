@@ -27,12 +27,12 @@ set(WARNINGS_AS_ERRORS OFF)
 
 # NOTE: Also update SFML_VERSION env var in .github/workflows/cmake.yml:84
 FetchContent_Declare(
-    SFML
-    GIT_REPOSITORY https://github.com/SFML/SFML.git
-    GIT_TAG        2.6.1
-    # GIT_TAG        69ea0cd863aed1d4092b970b676924a716ff718b # 2.6.1
-    # GIT_TAG        origin/master
-    GIT_SHALLOW    1  # works only with branches or tags, not with arbitrary commit hashes
+        SFML
+        GIT_REPOSITORY https://github.com/SFML/SFML.git
+        GIT_TAG        2.6.1
+        # GIT_TAG        69ea0cd863aed1d4092b970b676924a716ff718b # 2.6.1
+        # GIT_TAG        origin/master
+        GIT_SHALLOW    1  # works only with branches or tags, not with arbitrary commit hashes
 )
 
 FetchContent_MakeAvailable(SFML)
@@ -51,17 +51,17 @@ endif()
 
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 add_executable(${PROJECT_NAME}
-    main.cpp
-    generated/src/Helper.cpp
-    env_fixes.h
-        include/headers/card.h
-        include/sources/card.cpp
-        include/headers/question.h
-        include/sources/question.cpp
-        include/headers/game.h
-        include/sources/game.cpp
-        include/headers/gameboard.h
-        include/sources/gameboard.cpp
+        main.cpp
+        generated/src/Helper.cpp
+        env_fixes.h
+        sources/card.cpp
+        sources/question.cpp
+        sources/gameboard.cpp
+        sources/game.cpp
+        headers/card.h
+        headers/question.h
+        headers/gameboard.h
+        headers/game.h
 )
 
 include(cmake/CompilerFlags.cmake)
@@ -74,9 +74,8 @@ target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE generated/include)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SFML_SOURCE_DIR}/include)
 target_link_directories(${PROJECT_NAME} PRIVATE ${SFML_BINARY_DIR}/lib)
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system Threads::Threads)
-target_include_directories(${PROJECT_NAME} PRIVATE include/headers)
-include_directories(${CMAKE_SOURCE_DIR}/include)
-
+#target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE header)
+#target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE source)
 if(APPLE)
 elseif(UNIX)
     target_link_libraries(${PROJECT_NAME} PRIVATE X11)
@@ -96,14 +95,14 @@ endif()
 # remove this if not using audio or if using SFML 3
 if (WIN32 AND SFML_BUILD_AUDIO)
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy_if_different
-         ${SFML_SOURCE_DIR}/extlibs/bin/x64/openal32.dll
-         $<TARGET_FILE_DIR:${PROJECT_NAME}>
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${SFML_SOURCE_DIR}/extlibs/bin/x64/openal32.dll
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
     )
 endif()
 
 
 include(cmake/CopyHelper.cmake)
-# copy_files(FILES tastatura.txt)
+# copy_files(FILES tastatura.txt DIRECTORY Init assets Fonts)
 # copy_files(FILES tastatura.txt config.json DIRECTORY images sounds)
 # copy_files(DIRECTORY images sounds)

@@ -1,4 +1,4 @@
-#include "game.h"
+#include "../headers/game.h"
 
 void Game::run() {
     while (gameBoard.getWindow().isOpen()) {

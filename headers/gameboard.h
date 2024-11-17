@@ -4,8 +4,8 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include <memory>
-#include "Card.h"
-#include "Question.h"
+#include "../headers/card.h"
+#include "../headers/question.h"
 
 class GameBoard {
 private:

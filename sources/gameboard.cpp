@@ -1,4 +1,4 @@
-#include "gameboard.h"
+#include "../headers/gameboard.h"
 #include <iostream>
 
 GameBoard::GameBoard() : window(sf::VideoMode(800, 600), "Memory Game: Two by two") {

@@ -2,8 +2,8 @@
 #define GAME_H
 
 #include <SFML/Graphics.hpp>
-#include "card.h"
-#include "gameboard.h"
+#include "../headers/card.h"
+#include "../headers/gameboard.h"
 
 class Game {
 private:
