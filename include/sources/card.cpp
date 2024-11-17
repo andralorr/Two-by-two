@@ -40,7 +40,3 @@ void Card::setPosition(float x, float y) {
 sf::FloatRect Card::getGlobalBounds() const {
     return frontSprite.getGlobalBounds();
 }
-
-int Card::getQuestionIndex() const {
-    return questionIndex;
-}

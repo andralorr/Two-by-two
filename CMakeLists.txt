@@ -55,11 +55,11 @@ add_executable(${PROJECT_NAME}
     generated/src/Helper.cpp
     env_fixes.h
         include/headers/card.h
-        include/headers/question.h
-        include/headers/game.h
         include/sources/card.cpp
-        include/sources/game.cpp
+        include/headers/question.h
         include/sources/question.cpp
+        include/headers/game.h
+        include/sources/game.cpp
         include/headers/gameboard.h
         include/sources/gameboard.cpp
 )
@@ -75,6 +75,7 @@ target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SFML_SOURCE_DIR}/inc
 target_link_directories(${PROJECT_NAME} PRIVATE ${SFML_BINARY_DIR}/lib)
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system Threads::Threads)
 target_include_directories(${PROJECT_NAME} PRIVATE include/headers)
+include_directories(${CMAKE_SOURCE_DIR}/include)
 
 if(APPLE)
 elseif(UNIX)
