@@ -36,6 +36,6 @@ public:
 
     const std::vector<sf::RectangleShape>& getOptionBoxes() const;
     void setupQuestion(const Question& question);
-    void drawQuestion(const Question& question);
+    void drawQuestion();
 };
 #endif //GAMEBOARD_H

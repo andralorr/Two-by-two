@@ -20,7 +20,7 @@ void GameBoard::initializeCards() {
         exit(1);
     }
 
-    for (int i = 0; i < animalNames.size(); ++i) {
+    for (size_t i = 0; i < animalNames.size(); ++i) {
         sf::Texture frontTexture;
         if (!frontTexture.loadFromFile("../Images/" + animalNames[i] + ".png")) {
             std::cerr << "Error: front texture " << animalNames[i] << std::endl;
@@ -134,7 +134,7 @@ void GameBoard::setupQuestion(const Question& question) {
 }
 
 
-void GameBoard::drawQuestion(const Question& question) {
+void GameBoard::drawQuestion() {
     if (!currentQuestion) {
         return;
     }
