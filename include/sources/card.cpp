@@ -1,5 +1,6 @@
-#include "../headers/card.h"
-Card::Card(std::string animal, sf::Texture& frontTexture,sf::Texture& backTexture) :
+#include "card.h"
+
+Card::Card(std::string animal, sf::Texture& frontTexture, sf::Texture& backTexture, int questionIndex) :
     animal(animal), matched(false), isFlipped(false)
 {
     frontSprite.setTexture(frontTexture);
@@ -38,4 +39,8 @@ void Card::setPosition(float x, float y) {
 }
 sf::FloatRect Card::getGlobalBounds() const {
     return frontSprite.getGlobalBounds();
+}
+
+int Card::getQuestionIndex() const {
+    return questionIndex;
 }

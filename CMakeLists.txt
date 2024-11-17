@@ -60,6 +60,8 @@ add_executable(${PROJECT_NAME}
         include/sources/card.cpp
         include/sources/game.cpp
         include/sources/question.cpp
+        include/headers/gameboard.h
+        include/sources/gameboard.cpp
 )
 
 include(cmake/CompilerFlags.cmake)
@@ -72,8 +74,7 @@ target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE generated/include)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SFML_SOURCE_DIR}/include)
 target_link_directories(${PROJECT_NAME} PRIVATE ${SFML_BINARY_DIR}/lib)
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system Threads::Threads)
-target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE include/headers)
-target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE include/sources)
+target_include_directories(${PROJECT_NAME} PRIVATE include/headers)
 
 if(APPLE)
 elseif(UNIX)
