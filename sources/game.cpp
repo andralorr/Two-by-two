@@ -1,4 +1,12 @@
 #include "../headers/game.h"
+#include "../headers/question.h"
+#include <iostream>
+
+Game::Game() {
+    question.initializeQuestions();
+    isQuizActive = false;
+    currentQuestion = nullptr;
+}
 
 void Game::run() {
     while (gameBoard.getWindow().isOpen()) {
@@ -10,24 +18,53 @@ void Game::run() {
 
 void Game::processEvents() {
     sf::Event event;
-    while (gameBoard.getWindow().pollEvent(event)) {
-        if (event.type == sf::Event::Closed) {
-            gameBoard.getWindow().close();
-        }
-        if (event.type == sf::Event::MouseButtonPressed) {
-            if (event.mouseButton.button == sf::Mouse::Left) {
-                sf::Vector2i mousePosition = sf::Mouse::getPosition(gameBoard.getWindow());
-                Card* clickedCard = gameBoard.getCardAtPosition(mousePosition);
+    if (!isQuizActive) {
+        while (gameBoard.getWindow().pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                gameBoard.getWindow().close();
+            }
 
-                if (clickedCard && !clickedCard->isMatched() && clickedCard != firstFlippedCard) {
-                    clickedCard->flip();
+            if (event.type == sf::Event::MouseButtonPressed) {
+                if (event.mouseButton.button == sf::Mouse::Left) {
+                    sf::Vector2i mousePosition = sf::Mouse::getPosition(gameBoard.getWindow());
+                    Card* clickedCard = gameBoard.getCardAtPosition(mousePosition);
 
-                    if (!firstFlippedCard) {
-                        firstFlippedCard = clickedCard;
-                    } else {
-                        secondFlippedCard = clickedCard;
-                        isCheckingMatch = true;
+                    if (clickedCard && !clickedCard->isMatched() && clickedCard != firstFlippedCard) {
+                        clickedCard->flip();
+
+                        if (!firstFlippedCard) {
+                            firstFlippedCard = clickedCard;
+                        } else {
+                            secondFlippedCard = clickedCard;
+                            isCheckingMatch = true;
+                            matchTimer.restart(); // Start timer for match checking
+                        }
                     }
+                }
+            }
+        }
+    }
+
+    if (isQuizActive && gameBoardQuiz.getWindowQuiz().isOpen()) {
+        while (gameBoardQuiz.getWindowQuiz().pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                gameBoardQuiz.getWindowQuiz().close();
+                isQuizActive = false;
+            }
+
+            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                sf::Vector2i mousePosition = sf::Mouse::getPosition(gameBoardQuiz.getWindowQuiz());
+                int clickedOption = gameBoardQuiz.getOptionAtPosition(mousePosition);
+
+                if (clickedOption != -1) {
+                    if (currentQuestion && currentQuestion->checkAnswer(clickedOption)) {
+                        std::cout << "Correct answer!" << std::endl;
+                    } else {
+                        std::cout << "Wrong answer." << std::endl;
+                    }
+                    gameBoardQuiz.getWindowQuiz().close();
+                    isQuizActive = false;
+                    currentQuestion = nullptr;
                 }
             }
         }
@@ -35,42 +72,47 @@ void Game::processEvents() {
 }
 
 void Game::update() {
-    if (isCheckingMatch) {
-        handleMatch();
+    if (isCheckingMatch && !isQuizActive) {
+        if (matchTimer.getElapsedTime().asSeconds() >= matchDelay) {
+            handleMatch();
+        }
     }
 }
 
 void Game::handleMatch() {
-    if (firstFlippedCard->getAnimal() == secondFlippedCard->getAnimal()) {
+    if (firstFlippedCard && secondFlippedCard) {
+        if (firstFlippedCard->getAnimal() == secondFlippedCard->getAnimal()) {
+            currentQuestion = Question::getQuestionForAnimal(firstFlippedCard->getAnimal());
 
-        openQuestionWindow();
-    } else {
+            if (currentQuestion != nullptr) {
+                firstFlippedCard->setMatched(true);
+                secondFlippedCard->setMatched(true);
+                openQuestionWindow();
+            } else {
+                std::cerr << "Error: No question associated with the matched animal." << std::endl;
+            }
+        } else {
+            firstFlippedCard->flip();
+            secondFlippedCard->flip();
+        }
 
-        firstFlippedCard->flip();
-        secondFlippedCard->flip();
+        firstFlippedCard = nullptr;
+        secondFlippedCard = nullptr;
+        isCheckingMatch = false;
     }
-
-    firstFlippedCard = nullptr;
-    secondFlippedCard = nullptr;
-    isCheckingMatch = false;
 }
 
 void Game::openQuestionWindow() {
-    questionWindow.create(sf::VideoMode(400, 300), "Intrebare!");
-
-    while (questionWindow.isOpen()) {
-        sf::Event event;
-        while (questionWindow.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
-                questionWindow.close();
-            }
-        }
-
-        questionWindow.clear();
-        questionWindow.display();
+    if (currentQuestion != nullptr) {
+        gameBoardQuiz.createWindow();
+        gameBoardQuiz.setCurrentQuestion(currentQuestion);
+        isQuizActive = true;
     }
 }
 
 void Game::render() {
     gameBoard.render();
+    if (isQuizActive) {
+        gameBoardQuiz.render();
+    }
 }

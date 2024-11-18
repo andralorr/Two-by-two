@@ -1,12 +1,16 @@
 #include "../headers/gameboard.h"
 #include <iostream>
 
-GameBoard::GameBoard() : window(sf::VideoMode(800, 600), "Memory Game: Two by two") {
+GameBoard::GameBoard() : cardsWindow(sf::VideoMode::getFullscreenModes()[0], "Memory Game: Two by two", sf::Style::Fullscreen) {
     if (!backgroundTexture.loadFromFile("../Images/background.png")) {
         std::cerr << "Error: background texture " << std::endl;
         exit(1);
     }
     backgroundSprite.setTexture(backgroundTexture);
+    float scaleX = static_cast<float>(cardsWindow.getSize().x) / backgroundTexture.getSize().x;
+    float scaleY = static_cast<float>(cardsWindow.getSize().y) / backgroundTexture.getSize().y;
+    backgroundSprite.setScale(scaleX, scaleY);
+
     initializeCards();
     positionCards();
     shuffleCards();
@@ -37,12 +41,12 @@ void GameBoard::initializeCards() {
 void GameBoard::positionCards() {
     const int rows = 3;
     const int cols = 4;
-    const int cardWidth = 80;
-    const int cardHeight = 160;
-    const int spacing = 30;
+    const int cardWidth = 100;
+    const int cardHeight = 180;
+    const int spacing = 20;
 
-    int startX = (window.getSize().x - (cols * cardWidth + (cols - 1) * spacing)) / 2;
-    int startY = (window.getSize().y - (rows * cardHeight + (rows - 1) * spacing)) / 2;
+    int startX = (cardsWindow.getSize().x - (cols * cardWidth + (cols - 1) * spacing)) / 2;
+    int startY = (cardsWindow.getSize().y - (rows * cardHeight + (rows - 1) * spacing)) / 2;
 
     int index = 0;
     for (int row = 0; row < rows; ++row) {
@@ -56,12 +60,12 @@ void GameBoard::positionCards() {
 }
 
 void GameBoard::render() {
-    window.clear();
-    window.draw(backgroundSprite);
+    cardsWindow.clear();
+    cardsWindow.draw(backgroundSprite);
     for (auto& card : cards) {
-        card.draw(window);
+        card.draw(cardsWindow);
     }
-    window.display();
+    cardsWindow.display();
 }
 
 void GameBoard::shuffleCards() {
@@ -82,68 +86,5 @@ Card* GameBoard::getCardAtPosition(sf::Vector2i position) {
 }
 
 sf::RenderWindow& GameBoard::getWindow() {
-    return window;
-}
-
-void GameBoard::setupQuestion(const Question& question) {
-    currentQuestion = &const_cast<Question&>(question);
-
-    questionText.setString(question.getQuestionText());
-    questionText.setCharacterSize(30);
-    questionText.setFillColor(sf::Color::White);
-
-    sf::FloatRect questionBounds = questionText.getLocalBounds();
-    questionText.setOrigin(questionBounds.width / 2, questionBounds.height / 2);
-    questionText.setPosition(window.getSize().x / 2.0f, window.getSize().y / 4.0f);
-
-    optionTexts.clear();
-    optionBoxes.clear();
-    float startY = window.getSize().y / 2.0f;
-
-    const auto& options = question.getOptions();
-    for (size_t i = 0; i < options.size(); ++i) {
-        sf::Text optionText;
-
-        optionText.setString(options[i]);
-        optionText.setCharacterSize(24);
-        optionText.setFillColor(sf::Color::Black);
-
-        sf::FloatRect textBounds = optionText.getLocalBounds();
-        optionText.setOrigin(textBounds.width / 2, textBounds.height / 2);
-
-        float centerX = window.getSize().x / 2.0f;
-        float currentY = startY + i * 50;
-
-        optionText.setPosition(centerX, currentY);
-
-        sf::RectangleShape optionBox;
-        optionBox.setSize(sf::Vector2f(textBounds.width + 20, textBounds.height + 20));
-        optionBox.setFillColor(sf::Color::White);
-        optionBox.setOutlineColor(sf::Color::Black);
-        optionBox.setOutlineThickness(2);
-
-        optionBox.setOrigin(optionBox.getSize().x / 2, optionBox.getSize().y / 2);
-        optionBox.setPosition(centerX, currentY);
-
-        optionTexts.push_back(optionText);
-        optionBoxes.push_back(optionBox);
-    }
-}
-
-
-void GameBoard::drawQuestion() {
-    if (!currentQuestion) {
-        return;
-    }
-
-    window.draw(questionText);
-
-    for (size_t i = 0; i < optionBoxes.size(); ++i) {
-        window.draw(optionBoxes[i]);
-        window.draw(optionTexts[i]);
-    }
-}
-
-const std::vector<sf::RectangleShape>& GameBoard::getOptionBoxes() const {
-    return optionBoxes;
+    return cardsWindow;
 }

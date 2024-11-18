@@ -44,3 +44,11 @@ sf::FloatRect Card::getGlobalBounds() const {
 int Card::getQuestionIndex() const {
     return questionIndex;
 }
+
+sf::Vector2f Card::getOriginalSize() const{
+    return sf::Vector2f(80.0f, 160.0f);
+}
+void Card::setScale(float scaleX, float scaleY) {
+    frontSprite.setScale(scaleX, scaleY);
+    backSprite.setScale(scaleX, scaleY);
+}

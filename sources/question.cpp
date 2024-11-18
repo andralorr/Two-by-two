@@ -1,5 +1,8 @@
 #include "../headers/question.h"
 
+std::unordered_map<std::string, Question> Question::animalToQuestionMap;
+
+
 Question::Question(const std::string& question,
                    const std::vector<std::string>& options,
                    int correctAnswer) :
@@ -8,24 +11,44 @@ Question::Question(const std::string& question,
         correctAnswer(correctAnswer)
 {}
 
+
 std::string Question::getQuestionText() const {
     return question;
 }
+
 
 std::vector<std::string> Question::getOptions() const {
     return options;
 }
 
+
 bool Question::checkAnswer(int answerIndex) const {
     return answerIndex == correctAnswer;
 }
-std::vector<Question> Question::getQuestions() {
-    return {
-        Question("Ce NU ar trebui să mănânce pisicile?", {"Sarmale", "Ciocolată", "Morcovi"}, 1),
-        Question("Ce asemănare au ochii cameleonilor cu un obiectiv de cameră?", {"Pot mări ceea ce privesc", "Pot filma videoclipuri", "Pot fotografia peisaje"}, 0),
-        Question("Cât de sus poate sări o căprioară? (aproximativ)", {"4 m", "2 m", "3 m"}, 2),
-        Question("Care e mâncarea preferată a ursului koala?", {"Eucalipt", "Bambus", "Fructe exotice"}, 0),
-        Question("Câte specii de maimuțe există la momentul actual?", {"80", "301", "267"}, 2),
-        Question("În ce mediu natural trăiesc majoritatea papagalilor sălbatici??", {"Stepă și silvostepă", "Pădure tropicală", "Păduri de conifere"}, 1)
+
+
+void Question::initializeQuestions() {
+    static std::vector<Question> questions = {
+        Question("What foods are toxic or dangerous for cats?", {"Tuna", "Garlic", "Spinach"}, 1),
+        Question("What is the most impressive trick chameleons can do?", {"Change color to match their food", "Change color to blend with their environment", "Change color to communicate with aliens"}, 0),
+        Question("How high can a deer jump?", {"Up to 4 m", "Up to 2 m", "Up to 3 m"}, 2),
+        Question("What do koalas like to eat the most?", {"Eucalyptus", "Bamboo", "Passion Fruit"}, 0),
+        Question("What is the total number of monkey species in the world today?", {"80", "301", "267"}, 2),
+        Question("What is the primary natural environment of wild parrots?", {"Steppe and forest-steppe", "Tropical forest", "Coniferous forest"}, 1)
     };
+
+    animalToQuestionMap["cat"] = questions[0];
+    animalToQuestionMap["chameleon"] = questions[1];
+    animalToQuestionMap["deer"] = questions[2];
+    animalToQuestionMap["koala"] = questions[3];
+    animalToQuestionMap["monkey"] = questions[4];
+    animalToQuestionMap["parrot"] = questions[5];
+}
+
+Question* Question::getQuestionForAnimal(const std::string& animal) {
+    auto it = animalToQuestionMap.find(animal);
+    if (it != animalToQuestionMap.end()) {
+        return &it->second;
+    }
+    return nullptr;
 }

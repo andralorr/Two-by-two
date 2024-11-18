@@ -5,14 +5,12 @@
 
 class Card {
 private:
-
     std::string animal;
     sf::Sprite frontSprite;
     sf::Sprite backSprite;
     bool matched;
     bool isFlipped;
     int questionIndex;
-
 public:
     Card(std::string animal, sf::Texture& frontTexture, sf::Texture& backTexture, int questionIndex);
     std::string getAnimal() const;
@@ -21,6 +19,8 @@ public:
     void setMatched(bool matched);
     void flip();
     void setPosition(float x, float y);
+    sf::Vector2f getOriginalSize() const;
+    void setScale(float scaleX, float scaleY);
     sf::FloatRect getGlobalBounds() const;
     int getQuestionIndex() const;
 };

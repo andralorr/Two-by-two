@@ -5,11 +5,10 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include "../headers/card.h"
-#include "../headers/question.h"
 
 class GameBoard {
 private:
-    sf::RenderWindow window;
+    sf::RenderWindow cardsWindow;
     sf::Texture backgroundTexture;
     sf::Sprite backgroundSprite;
 
@@ -17,13 +16,6 @@ private:
     std::vector<std::shared_ptr<sf::Texture>> frontTextures;
 
     std::vector<Card> cards;
-    std::vector<Question> questions;
-    Question* currentQuestion = nullptr;
-
-    sf::Font font;
-    sf::Text questionText;
-    std::vector<sf::Text> optionTexts;
-    std::vector<sf::RectangleShape> optionBoxes;
 
 public:
     GameBoard();
@@ -33,9 +25,5 @@ public:
     void shuffleCards();
     sf::RenderWindow& getWindow();
     Card* getCardAtPosition(sf::Vector2i position);
-
-    const std::vector<sf::RectangleShape>& getOptionBoxes() const;
-    void setupQuestion(const Question& question);
-    void drawQuestion();
 };
 #endif //GAMEBOARD_H

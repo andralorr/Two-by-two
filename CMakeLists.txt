@@ -62,6 +62,8 @@ add_executable(${PROJECT_NAME}
         headers/question.h
         headers/gameboard.h
         headers/game.h
+        headers/gameboardQuiz.h
+        sources/gameboardQuiz.cpp
 )
 
 include(cmake/CompilerFlags.cmake)
