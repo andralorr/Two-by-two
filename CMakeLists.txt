@@ -57,15 +57,13 @@ add_executable(${PROJECT_NAME}
         sources/card.cpp
         sources/question.cpp
         sources/gameboard.cpp
-        sources/gameboardQuiz.cpp
         sources/game.cpp
+        sources/gameboardquiz.cpp
         headers/card.h
         headers/question.h
         headers/gameboard.h
         headers/game.h
-        headers/gameboardQuiz.h
         headers/gameboardquiz.h
-        sources/gameboardquiz.cpp
 )
 
 include(cmake/CompilerFlags.cmake)
