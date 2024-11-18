@@ -19,10 +19,7 @@ public:
     void setMatched(bool matched);
     void flip();
     void setPosition(float x, float y);
-    sf::Vector2f getOriginalSize() const;
-    void setScale(float scaleX, float scaleY);
     sf::FloatRect getGlobalBounds() const;
-    int getQuestionIndex() const;
 };
 
 #endif

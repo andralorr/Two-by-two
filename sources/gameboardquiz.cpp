@@ -1,9 +1,7 @@
-#include "../headers/gameboardQuiz.h"
+#include "../headers/gameboardquiz.h"
 #include <iostream>
 
-GameBoardQuiz::GameBoardQuiz() {
-
-}
+GameBoardQuiz::GameBoardQuiz() {}
 
 void GameBoardQuiz::createWindow() {
     if (!quizWindow.isOpen()) {
