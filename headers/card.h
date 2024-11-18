@@ -12,7 +12,7 @@ private:
     bool isFlipped;
 public:
     Card(std::string animal, sf::Texture& frontTexture, sf::Texture& backTexture);
-    std::string getAnimal() const;
+    const std::string& getAnimal() const;
     void draw(sf::RenderWindow& window);
     bool isMatched() const;
     void setMatched(bool matched);

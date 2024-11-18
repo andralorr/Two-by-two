@@ -2,7 +2,6 @@
 
 std::unordered_map<std::string, Question> Question::animalToQuestionMap;
 
-
 Question::Question(const std::string& question,
                    const std::vector<std::string>& options,
                    int correctAnswer) :
@@ -11,13 +10,11 @@ Question::Question(const std::string& question,
         correctAnswer(correctAnswer)
 {}
 
-
-std::string Question::getQuestionText() const {
+const std::string& Question::getQuestionText() const {
     return question;
 }
 
-
-std::vector<std::string> Question::getOptions() const {
+const std::vector<std::string>& Question::getOptions() const {
     return options;
 }
 

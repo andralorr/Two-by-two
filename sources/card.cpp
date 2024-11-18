@@ -10,7 +10,7 @@ Card::Card(std::string animal, sf::Texture& frontTexture, sf::Texture& backTextu
     backSprite.setScale(0.4f, 0.6f);
 }
 
-std::string Card::getAnimal() const {
+const std::string& Card::getAnimal() const {
     return animal;
 }
 
