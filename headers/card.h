@@ -15,7 +15,7 @@ public:
     const std::string& getAnimal() const;
     void draw(sf::RenderWindow& window);
     bool isMatched() const;
-    void setMatched(bool matched);
+    void setMatched(bool is_matched);
     void flip();
     void setPosition(float x, float y);
     sf::FloatRect getGlobalBounds() const;
