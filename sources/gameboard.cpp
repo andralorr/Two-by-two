@@ -24,16 +24,16 @@ void GameBoard::initializeCards() {
         exit(1);
     }
 
-    for (size_t i = 0; i < animalNames.size(); ++i) {
+    for (const auto& animalName : animalNames) {
         sf::Texture frontTexture;
-        if (!frontTexture.loadFromFile("../Images/" + animalNames[i] + ".png")) {
-            std::cerr << "Error: front texture " << animalNames[i] << std::endl;
+        if (!frontTexture.loadFromFile("../Images/" + animalName + ".png")) {
+            std::cerr << "Error: front texture " << animalName << std::endl;
             exit(1);
         }
         frontTextures.push_back(std::make_shared<sf::Texture>(frontTexture));
 
-        cards.emplace_back(animalNames[i], *frontTextures.back(), backTexture, i);
-        cards.emplace_back(animalNames[i], *frontTextures.back(), backTexture, i);
+        cards.emplace_back(animalName, *frontTextures.back(), backTexture);
+        cards.emplace_back(animalName, *frontTextures.back(), backTexture);
     }
     shuffleCards();
 }

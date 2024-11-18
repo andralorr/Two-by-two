@@ -10,9 +10,8 @@ private:
     sf::Sprite backSprite;
     bool matched;
     bool isFlipped;
-    int questionIndex;
 public:
-    Card(std::string animal, sf::Texture& frontTexture, sf::Texture& backTexture, int questionIndex);
+    Card(std::string animal, sf::Texture& frontTexture, sf::Texture& backTexture);
     std::string getAnimal() const;
     void draw(sf::RenderWindow& window);
     bool isMatched() const;

@@ -1,7 +1,7 @@
 #include "../headers/card.h"
 
-Card::Card(std::string animal, sf::Texture& frontTexture, sf::Texture& backTexture, int questionIndex) :
-    animal(animal), matched(false), isFlipped(false), questionIndex(questionIndex)
+Card::Card(std::string animal, sf::Texture& frontTexture, sf::Texture& backTexture):
+    animal(animal), matched(false), isFlipped(false)
 {
     frontSprite.setTexture(frontTexture);
     backSprite.setTexture(backTexture);
