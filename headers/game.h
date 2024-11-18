@@ -1,7 +1,7 @@
 #pragma once
-#include "gameboard.h"
-#include "gameboardquiz.h"
-#include "question.h"
+#include "../headers/gameboard.h"
+#include "../headers/gameboardquiz.h"
+#include "../headers/question.h"
 #include <SFML/Graphics.hpp>
 
 class Game {
