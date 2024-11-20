@@ -16,6 +16,17 @@ GameBoard::GameBoard() : cardsWindow(sf::VideoMode::getFullscreenModes()[0], "Me
     shuffleCards();
 }
 
+GameBoard::GameBoard(const GameBoard& other) :
+    backgroundTexture(other.backgroundTexture),
+    backgroundSprite(other.backgroundSprite),
+    backTexture(other.backTexture),
+    frontTextures(other.frontTextures),
+    cards(other.cards)
+{
+}
+
+GameBoard::~GameBoard() {}
+
 void GameBoard::initializeCards() {
     std::vector<std::string> animalNames = {"cat", "chameleon", "deer", "koala", "monkey", "parrot"};
 
@@ -70,10 +81,8 @@ void GameBoard::render() {
 
 void GameBoard::shuffleCards() {
     std::srand(unsigned(std::time(0)));
-    for (int i = cards.size() - 1; i > 0; --i) {
-        int j = std::rand() % (i + 1);
-        std::swap(cards[i], cards[j]);
-    }
+    std::random_shuffle(cards.begin(), cards.end());
+    positionCards();
 }
 
 Card* GameBoard::getCardAtPosition(sf::Vector2i position) {
@@ -84,7 +93,21 @@ Card* GameBoard::getCardAtPosition(sf::Vector2i position) {
     }
     return nullptr;
 }
+std::vector<Card>& GameBoard::getCards() {
+    return cards;
+}
 
 sf::RenderWindow& GameBoard::getWindow() {
     return cardsWindow;
+}
+
+GameBoard& GameBoard::operator=(const GameBoard& other) {
+    if (this != &other) {
+        backgroundTexture = other.backgroundTexture;
+        backgroundSprite = other.backgroundSprite;
+        backTexture = other.backTexture;
+        frontTextures = other.frontTextures;
+        cards = other.cards;
+    }
+    return *this;
 }

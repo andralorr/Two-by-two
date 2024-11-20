@@ -10,6 +10,14 @@ Question::Question(const std::string& question,
         correctAnswer(correctAnswer)
 {}
 
+Question::Question(const Question& other) :
+    question(other.question),
+    options(other.options),
+    correctAnswer(other.correctAnswer)
+{}
+
+Question::~Question() = default;
+
 const std::string& Question::getQuestionText() const {
     return question;
 }
@@ -48,4 +56,13 @@ Question* Question::getQuestionForAnimal(const std::string& animal) {
         return &it->second;
     }
     return nullptr;
+}
+
+Question& Question::operator=(const Question& other) {
+    if (this != &other) {
+        question = other.question;
+        options = other.options;
+        correctAnswer = other.correctAnswer;
+    }
+    return *this;
 }

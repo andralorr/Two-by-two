@@ -15,6 +15,9 @@ private:
 public:
     Question() = default;
     Question(const std::string& question, const std::vector<std::string>& options, int correctAnswer);
+    Question(const Question& other);
+    Question& operator=(const Question& other);
+    ~Question();
     bool checkAnswer(int answerIndex) const;
     const std::string& getQuestionText() const;
     const std::vector<std::string>& getOptions() const;

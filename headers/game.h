@@ -6,6 +6,7 @@
 
 class Game {
 private:
+    std::vector<Card> cards;
     GameBoard gameBoard;
     GameBoardQuiz gameBoardQuiz;
     Card* firstFlippedCard = nullptr;
@@ -24,4 +25,5 @@ public:
     void render();
     void handleMatch();
     void openQuestionWindow();
+    friend std::ostream& operator<<(std::ostream& os, const Card& card);
 };

@@ -19,6 +19,9 @@ private:
     std::vector<sf::RectangleShape> optionBoxes;
 public:
     GameBoardQuiz();
+    GameBoardQuiz(const GameBoardQuiz& other);
+    ~GameBoardQuiz();
+    GameBoardQuiz& operator=(const GameBoardQuiz& other);
     void createWindow();
     void setCurrentQuestion(Question* question);
     void positionQuestions();

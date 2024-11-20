@@ -3,6 +3,18 @@
 
 GameBoardQuiz::GameBoardQuiz() {}
 
+GameBoardQuiz::GameBoardQuiz(const GameBoardQuiz& other) :
+    backgroundTexture(other.backgroundTexture),
+    backgroundSprite(other.backgroundSprite),
+    currentQuestion(other.currentQuestion),
+    font(other.font),
+    questionText(other.questionText),
+    optionTexts(other.optionTexts),
+    optionBoxes(other.optionBoxes)
+{}
+
+GameBoardQuiz::~GameBoardQuiz() {}
+
 void GameBoardQuiz::createWindow() {
     if (!quizWindow.isOpen()) {
         quizWindow.create(sf::VideoMode(800, 600), "Question");
@@ -114,4 +126,17 @@ int GameBoardQuiz::getOptionAtPosition(const sf::Vector2i& position) const {
         }
     }
     return -1;
+}
+
+GameBoardQuiz& GameBoardQuiz::operator=(const GameBoardQuiz& other) {
+    if (this != &other) {
+        backgroundTexture = other.backgroundTexture;
+        backgroundSprite = other.backgroundSprite;
+        font = other.font;
+        questionText = other.questionText;
+        optionTexts = other.optionTexts;
+        optionBoxes = other.optionBoxes;
+        currentQuestion = other.currentQuestion;
+    }
+    return *this;
 }
