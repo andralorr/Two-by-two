@@ -21,7 +21,8 @@ public:
     bool checkAnswer(int answerIndex) const;
     const std::string& getQuestionText() const;
     const std::vector<std::string>& getOptions() const;
-    void initializeQuestions();
+
+    static void initializeQuestions();
     static Question* getQuestionForAnimal(const std::string& animal);
 };
 

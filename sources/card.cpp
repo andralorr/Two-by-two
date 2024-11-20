@@ -6,8 +6,8 @@ Card::Card(const std::string &animal, sf::Texture& frontTexture, sf::Texture& ba
     frontSprite.setTexture(frontTexture);
     backSprite.setTexture(backTexture);
 
-    frontSprite.setScale(0.4f, 0.6f);
-    backSprite.setScale(0.4f, 0.6f);
+    frontSprite.setScale(0.5f, 0.7f);
+    backSprite.setScale(0.5f, 0.7f);
 }
 
 Card::Card(const Card& other) :

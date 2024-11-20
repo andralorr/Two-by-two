@@ -28,7 +28,7 @@ GameBoard::GameBoard(const GameBoard& other) :
 GameBoard::~GameBoard() {}
 
 void GameBoard::initializeCards() {
-    std::vector<std::string> animalNames = {"cat", "chameleon", "deer", "koala", "monkey", "parrot"};
+    std::vector<std::string> animalNames = {"giraffe", "chameleon", "deer", "owl", "monkey", "parrot"};
 
     if (!backTexture.loadFromFile("../Images/cardback.png")) {
         std::cerr << "Error: backcard texture" << std::endl;
@@ -52,9 +52,9 @@ void GameBoard::initializeCards() {
 void GameBoard::positionCards() {
     const int rows = 3;
     const int cols = 4;
-    const int cardWidth = 100;
-    const int cardHeight = 180;
-    const int spacing = 20;
+    const int cardWidth = 120;
+    const int cardHeight = 200;
+    const int spacing = 30;
 
     int startX = (cardsWindow.getSize().x - (cols * cardWidth + (cols - 1) * spacing)) / 2;
     int startY = (cardsWindow.getSize().y - (rows * cardHeight + (rows - 1) * spacing)) / 2;

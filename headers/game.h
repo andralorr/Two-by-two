@@ -15,7 +15,7 @@ private:
     Question question;
     bool isCheckingMatch = false;
     bool isQuizActive = false;
-    float matchDelay = 1.0f;
+    float matchDelay = 0.8f;
     sf::Clock matchTimer;
 public:
     Game();

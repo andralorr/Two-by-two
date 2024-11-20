@@ -34,18 +34,18 @@ bool Question::checkAnswer(int answerIndex) const {
 
 void Question::initializeQuestions() {
     static std::vector<Question> questions = {
-        Question("What foods are toxic or dangerous for cats?", {"Tuna", "Garlic", "Spinach"}, 1),
-        Question("What is the most impressive trick chameleons can do?", {"Change color to match their food", "Change color to blend with their environment", "Change color to communicate with aliens"}, 0),
-        Question("How high can a deer jump?", {"Up to 4 m", "Up to 2 m", "Up to 3 m"}, 2),
-        Question("What do koalas like to eat the most?", {"Eucalyptus", "Bamboo", "Passion Fruit"}, 0),
-        Question("What is the total number of monkey species in the world today?", {"80", "301", "267"}, 2),
-        Question("What is the primary natural environment of wild parrots?", {"Steppe and forest-steppe", "Tropical forest", "Coniferous forest"}, 1)
+        Question("What special feature allows owls to hunt so well at night?", {"They glow in the dark", "Silent flight", "X-ray vision"}, 1),
+        Question("What is the most impressive trick chameleons can do?", {"Change color to blend with their environment","Change color to match their food", "Change color to communicate with aliens"}, 0),
+        Question("What do male deer grow and shed every year?", {"Tail", "A mustache", "Antlers"}, 2),
+        Question("How many bones are in a giraffe's neck?", {"7", "14", "21"}, 0),
+        Question("What do monkeys use their tails for?", {"As a pillow", "To swat flies", "For balance and grabbing things"}, 2),
+        Question("What unique talent are parrots famous for?", {"Doing backflips", "Mimicking sounds and speech", "Solving math problems"}, 1)
     };
 
-    animalToQuestionMap["cat"] = questions[0];
+    animalToQuestionMap["owl"] = questions[0];
     animalToQuestionMap["chameleon"] = questions[1];
     animalToQuestionMap["deer"] = questions[2];
-    animalToQuestionMap["koala"] = questions[3];
+    animalToQuestionMap["giraffe"] = questions[3];
     animalToQuestionMap["monkey"] = questions[4];
     animalToQuestionMap["parrot"] = questions[5];
 }

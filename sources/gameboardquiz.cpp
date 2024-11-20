@@ -27,8 +27,8 @@ void GameBoardQuiz::createWindow() {
         quizWindow.setPosition(position);
     }
 
-    if (!backgroundTexture.loadFromFile("../Images/background.png")) {
-        std::cerr << "Error: Could not load background texture!" << std::endl;
+    if (!backgroundTexture.loadFromFile("../Images/quizbackground.png")) {
+        std::cerr << "Error: Could not load quizbackground texture!" << std::endl;
         exit(1);
     }
     backgroundSprite.setTexture(backgroundTexture);
@@ -39,8 +39,8 @@ void GameBoardQuiz::createWindow() {
     }
 
     questionText.setFont(font);
-    questionText.setCharacterSize(24);
-    questionText.setFillColor(sf::Color::Black);
+    questionText.setCharacterSize(20);
+    questionText.setFillColor(sf::Color::Blue);
     questionText.setStyle(sf::Text::Bold);
 }
 
