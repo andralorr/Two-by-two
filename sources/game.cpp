@@ -63,7 +63,7 @@ void Game::processEvents() {
                         isQuizActive = false;
                         currentQuestion = nullptr;
                     } else {
-                        std::cout << "Wrong answer." << std::endl;
+                        std::cout << "Wrong answer!" << std::endl;
                         gameBoardQuiz.getWindowQuiz().close();
                         isQuizActive = false;
                         currentQuestion = nullptr;
