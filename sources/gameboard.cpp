@@ -73,7 +73,7 @@ void GameBoard::positionCards() {
 void GameBoard::render() {
     cardsWindow.clear();
     cardsWindow.draw(backgroundSprite);
-    for (auto& card : cards) {
+    for (const auto& card : cards) {
         card.draw(cardsWindow);
     }
     cardsWindow.display();
@@ -81,7 +81,10 @@ void GameBoard::render() {
 
 void GameBoard::shuffleCards() {
     std::srand(unsigned(std::time(0)));
-    std::random_shuffle(cards.begin(), cards.end());
+    for (int i = cards.size() - 1; i > 0; --i) {
+        int j = std::rand() % (i + 1);
+        std::swap(cards[i], cards[j]);
+    }
     positionCards();
 }
 

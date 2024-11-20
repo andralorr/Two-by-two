@@ -12,12 +12,10 @@ Card::Card(const std::string &animal, sf::Texture& frontTexture, sf::Texture& ba
 
 Card::Card(const Card& other) :
     animal(other.animal),
-    matched(other.matched),
-    isFlipped(other.isFlipped)
-{
-    frontSprite = other.frontSprite;
-    backSprite = other.backSprite;
-}
+    frontSprite(other.frontSprite),
+    backSprite(other.backSprite),
+    matched(other.matched), isFlipped(other.isFlipped)
+{}
 
 Card::~Card() {};
 
