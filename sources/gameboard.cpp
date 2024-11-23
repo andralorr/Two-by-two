@@ -1,7 +1,7 @@
 #include "../headers/gameboard.h"
 #include <iostream>
 
-GameBoard::GameBoard() : cardsWindow(sf::VideoMode::getFullscreenModes()[0], "Memory Game: Two by two", sf::Style::Fullscreen) {
+GameBoard::GameBoard() : cardsWindow(sf::VideoMode::getFullscreenModes()[0], "Memory Game: Two by two", sf::Style::Close) {
     if (!backgroundTexture.loadFromFile("../Images/background.png")) {
         std::cerr << "Error: background texture " << std::endl;
         exit(1);

@@ -17,7 +17,7 @@ GameBoardQuiz::~GameBoardQuiz() {}
 
 void GameBoardQuiz::createWindow() {
     if (!quizWindow.isOpen()) {
-        quizWindow.create(sf::VideoMode(800, 600), "Question");
+        quizWindow.create(sf::VideoMode(800, 600), "Question",  sf::Style::Titlebar);
 
         sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
         sf::Vector2i position(
