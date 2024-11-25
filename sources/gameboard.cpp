@@ -2,7 +2,7 @@
 #include <iostream>
 
 GameBoard::GameBoard() : cardsWindow(sf::VideoMode::getFullscreenModes()[0], "Memory Game: Two by two", sf::Style::Close) {
-    if (!backgroundTexture.loadFromFile("../Images/background.png")) {
+    if (!backgroundTexture.loadFromFile("Images/background.png")) {
         std::cerr << "Error: background texture " << std::endl;
         exit(1);
     }
@@ -30,14 +30,14 @@ GameBoard::~GameBoard() {}
 void GameBoard::initializeCards() {
     std::vector<std::string> animalNames = {"giraffe", "chameleon", "deer", "owl", "monkey", "parrot"};
 
-    if (!backTexture.loadFromFile("../Images/cardback.png")) {
+    if (!backTexture.loadFromFile("Images/cardback.png")) {
         std::cerr << "Error: backcard texture" << std::endl;
         exit(1);
     }
 
     for (const auto& animalName : animalNames) {
         sf::Texture frontTexture;
-        if (!frontTexture.loadFromFile("../Images/" + animalName + ".png")) {
+        if (!frontTexture.loadFromFile("Images/" + animalName + ".png")) {
             std::cerr << "Error: front texture " << animalName << std::endl;
             exit(1);
         }
@@ -113,4 +113,16 @@ GameBoard& GameBoard::operator=(const GameBoard& other) {
         cards = other.cards;
     }
     return *this;
+}
+
+std::ostream& operator<<(std::ostream& os, const GameBoard& gameBoard) {
+    os << "{"
+    << "Window Size: "<<gameBoard.cardsWindow.getSize().x << "x" << gameBoard.cardsWindow.getSize().y
+    << ", Number of Cards: " << gameBoard.cards.size()
+    << ", Cards: [";
+    for (const auto& card : gameBoard.cards) {
+        os << card.getAnimal() << " ";
+    }
+    os << "]}";
+    return os;
 }

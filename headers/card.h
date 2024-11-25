@@ -24,6 +24,7 @@ public:
     bool is_flipped() const { return isFlipped; }
     void setPosition(float x, float y);
     sf::FloatRect getGlobalBounds() const;
+    friend std::ostream& operator<<(std::ostream& os, const Card& card);
 };
 
 #endif

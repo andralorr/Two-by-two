@@ -65,3 +65,7 @@ Card& Card::operator=(const Card& other) {
     return *this;
 }
 
+std::ostream& operator<<(std::ostream& os, const Card& card) {
+    os << "Card: " << card.getAnimal() << " | Matched: " << (card.isMatched()? "Yes" : "No");
+    return os;
+}

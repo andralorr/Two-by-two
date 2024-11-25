@@ -27,13 +27,13 @@ void GameBoardQuiz::createWindow() {
         quizWindow.setPosition(position);
     }
 
-    if (!backgroundTexture.loadFromFile("../Images/quizbackground.png")) {
+    if (!backgroundTexture.loadFromFile("Images/quizbackground.png")) {
         std::cerr << "Error: Could not load quizbackground texture!" << std::endl;
         exit(1);
     }
     backgroundSprite.setTexture(backgroundTexture);
 
-    if (!font.loadFromFile("../font/font.ttf")) {
+    if (!font.loadFromFile("font/font.ttf")) {
         std::cerr << "Error: Could not load font!" << std::endl;
         exit(1);
     }

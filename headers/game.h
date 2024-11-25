@@ -25,5 +25,5 @@ public:
     void render();
     void handleMatch();
     void openQuestionWindow();
-    friend std::ostream& operator<<(std::ostream& os, const Card& card);
+    friend std::ostream& operator<<(std::ostream& os, const Game& game);
 };

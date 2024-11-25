@@ -66,3 +66,13 @@ Question& Question::operator=(const Question& other) {
     }
     return *this;
 }
+
+std::ostream& operator<<(std::ostream& os, const Question& q) {
+    if (q.correctAnswer != -1 && !q.options.empty()) {
+        os << "Question: " << q.question
+           << "\nCorrect Answer: " << q.options[q.correctAnswer];
+    } else {
+        os << "Invalid question";
+    }
+    return os;
+}

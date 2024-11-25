@@ -9,6 +9,7 @@ Game::Game() {
 }
 
 void Game::run() {
+    std::cout << *this << std::endl;
     while (gameBoard.getWindow().isOpen()) {
         processEvents();
         update();
@@ -57,6 +58,7 @@ void Game::processEvents() {
                 int clickedOption = gameBoardQuiz.getOptionAtPosition(mousePosition);
 
                 if (clickedOption != -1) {
+                    std::cout << *currentQuestion << std::endl;
                     if (currentQuestion && currentQuestion->checkAnswer(clickedOption)) {
                         std::cout << "Correct answer!" << std::endl;
                         gameBoardQuiz.getWindowQuiz().close();
@@ -93,11 +95,6 @@ void Game::update() {
             handleMatch();
         }
     }
-}
-
-std::ostream& operator<<(std::ostream& os, const Card& card) {
-    os << "Card: " << card.getAnimal() << " | Matched: " << (card.isMatched()? "Yes" : "No");
-    return os;
 }
 
 void Game::handleMatch() {
@@ -139,4 +136,9 @@ void Game::render() {
     if (isQuizActive) {
         gameBoardQuiz.render();
     }
+}
+
+std::ostream& operator<<(std::ostream& os, const Game& game) {
+    os << "\n GameBoard: "<< game.gameBoard<< "\n";
+    return os;
 }

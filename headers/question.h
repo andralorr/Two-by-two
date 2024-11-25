@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <iostream>
 
 class Question {
 private:
@@ -24,6 +25,7 @@ public:
 
     static void initializeQuestions();
     static Question* getQuestionForAnimal(const std::string& animal);
+    friend std::ostream& operator<<(std::ostream& os, const Question& q);
 };
 
 #endif // QUESTION_H
