@@ -57,14 +57,15 @@ void Game::processEvents() {
                 sf::Vector2i mousePosition = sf::Mouse::getPosition(gameBoardQuiz.getWindowQuiz());
                 int clickedOption = gameBoardQuiz.getOptionAtPosition(mousePosition);
 
-                if (currentQuestion) {
                     if (clickedOption != -1) {
-                        std::cout << *currentQuestion << std::endl;
-                        if (currentQuestion && currentQuestion->checkAnswer(clickedOption)) {
-                            std::cout << "Correct answer!" << std::endl;
-                            gameBoardQuiz.getWindowQuiz().close();
-                            isQuizActive = false;
-                            currentQuestion = nullptr;
+                        if (currentQuestion) {
+                            std::cout << *currentQuestion << std::endl;
+                            if (currentQuestion->checkAnswer(clickedOption)) {
+                                std::cout << "Correct answer!" << std::endl;
+                                gameBoardQuiz.getWindowQuiz().close();
+                                isQuizActive = false;
+                                currentQuestion = nullptr;
+                            }
                         } else {
                             std::cout << "Wrong answer!" << std::endl;
                             gameBoardQuiz.getWindowQuiz().close();
@@ -85,10 +86,8 @@ void Game::processEvents() {
                         isQuizActive = false;
                         currentQuestion = nullptr;
                     }
-                }
-                else {
+                else
                     std::cerr << "Error: currentQuestion is null!" << std::endl;
-                }
             }
         }
     }
