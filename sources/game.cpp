@@ -57,32 +57,37 @@ void Game::processEvents() {
                 sf::Vector2i mousePosition = sf::Mouse::getPosition(gameBoardQuiz.getWindowQuiz());
                 int clickedOption = gameBoardQuiz.getOptionAtPosition(mousePosition);
 
-                if (clickedOption != -1) {
-                    std::cout << *currentQuestion << std::endl;
-                    if (currentQuestion && currentQuestion->checkAnswer(clickedOption)) {
-                        std::cout << "Correct answer!" << std::endl;
-                        gameBoardQuiz.getWindowQuiz().close();
-                        isQuizActive = false;
-                        currentQuestion = nullptr;
-                    } else {
-                        std::cout << "Wrong answer!" << std::endl;
-                        gameBoardQuiz.getWindowQuiz().close();
-                        isQuizActive = false;
-                        currentQuestion = nullptr;
-                        gameBoard.shuffleCards();
-                        for (auto& card : gameBoard.getCards()) {
-                            card.setMatched(false);
-                            if (card.is_flipped()) {
-                                card.flip();
+                if (currentQuestion) {
+                    if (clickedOption != -1) {
+                        std::cout << *currentQuestion << std::endl;
+                        if (currentQuestion && currentQuestion->checkAnswer(clickedOption)) {
+                            std::cout << "Correct answer!" << std::endl;
+                            gameBoardQuiz.getWindowQuiz().close();
+                            isQuizActive = false;
+                            currentQuestion = nullptr;
+                        } else {
+                            std::cout << "Wrong answer!" << std::endl;
+                            gameBoardQuiz.getWindowQuiz().close();
+                            isQuizActive = false;
+                            currentQuestion = nullptr;
+                            gameBoard.shuffleCards();
+                            for (auto& card : gameBoard.getCards()) {
+                                card.setMatched(false);
+                                if (card.is_flipped()) {
+                                    card.flip();
+                                }
                             }
+                            firstFlippedCard = nullptr;
+                            secondFlippedCard = nullptr;
+                            isCheckingMatch = false;
                         }
-                        firstFlippedCard = nullptr;
-                        secondFlippedCard = nullptr;
-                        isCheckingMatch = false;
+                        gameBoardQuiz.getWindowQuiz().close();
+                        isQuizActive = false;
+                        currentQuestion = nullptr;
                     }
-                    gameBoardQuiz.getWindowQuiz().close();
-                    isQuizActive = false;
-                    currentQuestion = nullptr;
+                }
+                else {
+                    std::cerr << "Error: currentQuestion is null!" << std::endl;
                 }
             }
         }
