@@ -11,6 +11,9 @@ GameBoard::GameBoard() : cardsWindow(sf::VideoMode::getFullscreenModes()[0], "Me
     float scaleY = static_cast<float>(cardsWindow.getSize().y) / backgroundTexture.getSize().y;
     backgroundSprite.setScale(scaleX, scaleY);
 
+    cardsWindow.setFramerateLimit(60);
+    cardsWindow.setVerticalSyncEnabled(true);
+
     initializeCards();
     positionCards();
     shuffleCards();
@@ -116,10 +119,10 @@ GameBoard& GameBoard::operator=(const GameBoard& other) {
 }
 
 std::ostream& operator<<(std::ostream& os, const GameBoard& gameBoard) {
-    os << "{"
+    os << "{ "
     << "Window Size: "<<gameBoard.cardsWindow.getSize().x << "x" << gameBoard.cardsWindow.getSize().y
     << ", Number of Cards: " << gameBoard.cards.size()
-    << ", Cards: [";
+    << ", Cards: [ ";
     for (const auto& card : gameBoard.cards) {
         os << card.getAnimal() << " ";
     }
