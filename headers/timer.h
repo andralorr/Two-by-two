@@ -12,7 +12,7 @@ private:
     sf::Font font;
 
 public:
-    Timer(int startTime);
+    explicit Timer(int startTime);
     void updateText();
     void update();
     void render(sf::RenderWindow& window) const;

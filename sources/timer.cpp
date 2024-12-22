@@ -26,7 +26,6 @@ void Timer::update() {
         clock.restart();
     }
 
-    // Actualizare culoare doar dacă este necesar
     if (timeRemaining <= 30 && timeText.getFillColor() != sf::Color::Red) {
         timeText.setFillColor(sf::Color::Red);
     } else if (timeRemaining > 30 && timeText.getFillColor() != sf::Color::White) {
