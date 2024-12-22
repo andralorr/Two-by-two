@@ -15,6 +15,7 @@ private:
     Timer timer;
     GameBoardQuiz gameBoardQuiz;
     Question question_;
+    GameMessage* gameMessage{};
     Question* currentQuestion;
     Card* firstFlippedCard = nullptr;
     Card* secondFlippedCard = nullptr;
@@ -45,6 +46,7 @@ public:
     void resetGameAfterWrongAnswer();
     bool allQuestionsAnsweredCorrectly();
     friend std::ostream& operator<<(std::ostream& os, const Game& game);
+    Game& operator=(const Game& other);
     void restartGame();
 };
 

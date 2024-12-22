@@ -1,7 +1,6 @@
 #include "../headers/timer.h"
 #include <iostream>
-#include <stdexcept>
-
+#include "../headers/gameexception.h"
 constexpr float TIMER_X_POS = 10.f;
 constexpr float TIMER_Y_POS = 10.f;
 
@@ -9,7 +8,7 @@ Timer::Timer(int startTime) {
     timeRemaining = startTime;
 
     if (!font.loadFromFile("font/font.ttf")) {
-        throw std::runtime_error("Failed to load font!");
+        throw FileNotFoundException("Timer font");
     }
 
     timeText.setFont(font);

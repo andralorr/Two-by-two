@@ -1,10 +1,10 @@
 #include "../headers/gamemessage.h"
-#include <stdexcept>
+#include "../headers/gameexception.h"
 
 GameMessage::GameMessage(const std::string& message, sf::RenderWindow& win, const std::string& bgPath)
     : window(win) {
     if (!font.loadFromFile("font/font2.ttf")) {
-        throw std::runtime_error("Could not load font!");
+        throw FileNotFoundException("gamemessage font");
     }
 
     messageText.setFont(font);
@@ -15,24 +15,20 @@ GameMessage::GameMessage(const std::string& message, sf::RenderWindow& win, cons
 
     const sf::FloatRect textBounds = messageText.getLocalBounds();
     messageText.setPosition(
-    (static_cast<float>(window.getSize().x) - textBounds.width) / 2.f,
-    (static_cast<float>(window.getSize().y) - textBounds.height) / 3.f
+        (static_cast<float>(window.getSize().x) - textBounds.width) / 2.f,
+        (static_cast<float>(window.getSize().y) - textBounds.height) / 3.f
     );
 }
 
 void GameMessage::setBackground(const std::string& bgPath) {
     if (!backgroundTexture.loadFromFile(bgPath)) {
-        throw std::runtime_error("Could not load background texture: " + bgPath);
+        throw FileNotFoundException("gamemessage background");
     }
     backgroundSprite.setTexture(backgroundTexture);
 }
 
 StartMessage::StartMessage(sf::RenderWindow& win)
-    : GameMessage(
-          "Memory Game: Two by Two\n",
-          win,
-          "Images/start.png"
-      ),
+    : GameMessage("Memory Game: Two by Two\n", win, "Images/start.png"),
       startClicked(false) {
     messageText.setFillColor(sf::Color::White);
     setupStartText();
@@ -46,8 +42,8 @@ void StartMessage::setupStartText() {
 
     const sf::FloatRect textBounds = buttonText.getLocalBounds();
     buttonText.setPosition(
-    static_cast<float>(window.getSize().x) / 2.f - textBounds.width / 2.f,
-    static_cast<float>(window.getSize().y) / 2.f + 200.f - textBounds.height / 2.f + 50.f
+        static_cast<float>(window.getSize().x) / 2.f - textBounds.width / 2.f,
+        static_cast<float>(window.getSize().y) / 2.f + 200.f - textBounds.height / 2.f + 50.f
     );
 }
 
@@ -76,6 +72,10 @@ void StartMessage::display() {
     }
 }
 
+std::unique_ptr<GameMessage> StartMessage::clone() const {
+    return std::make_unique<StartMessage>(*this);
+}
+
 SuccessMessage::SuccessMessage(sf::RenderWindow& win)
     : GameMessage("Noah couldn't have done it without you!", win, "Images/success.png") {
     messageText.setCharacterSize(60);
@@ -85,7 +85,7 @@ SuccessMessage::SuccessMessage(sf::RenderWindow& win)
         (static_cast<float>(window.getSize().x) - textBounds.width) / 2.f,
         (static_cast<float>(window.getSize().y) - textBounds.height) / 2.f + 100.f
     );
-    messageText.setFillColor(sf::Color(0,255,255));
+    messageText.setFillColor(sf::Color(0, 255, 255));
 }
 
 void SuccessMessage::display() {
@@ -93,6 +93,7 @@ void SuccessMessage::display() {
     window.draw(backgroundSprite);
     window.draw(messageText);
     window.display();
+
     sf::Event event{};
     while (window.isOpen()) {
         while (window.pollEvent(event)) {
@@ -101,6 +102,10 @@ void SuccessMessage::display() {
             }
         }
     }
+}
+
+std::unique_ptr<GameMessage> SuccessMessage::clone() const {
+    return std::make_unique<SuccessMessage>(*this);
 }
 
 FailureMessage::FailureMessage(sf::RenderWindow& win)
@@ -160,4 +165,8 @@ void FailureMessage::display() {
 
 bool FailureMessage::isRestartClicked() const {
     return restartClicked;
+}
+
+std::unique_ptr<GameMessage> FailureMessage::clone() const {
+    return std::make_unique<FailureMessage>(*this);
 }

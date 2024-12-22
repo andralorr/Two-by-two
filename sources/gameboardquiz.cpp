@@ -1,5 +1,5 @@
 #include "../headers/gameboardquiz.h"
-#include <iostream>
+#include "../headers/gameexception.h"
 
 GameBoardQuiz::GameBoardQuiz()
 = default;
@@ -31,14 +31,12 @@ void GameBoardQuiz::createWindow() {
     }
 
     if (!backgroundTexture.loadFromFile("Images/quizbackground.png")) {
-        std::cerr << "Error: Could not load quizbackground texture!" << std::endl;
-        exit(1);
+        throw FileNotFoundException("quizbackground");
     }
     backgroundSprite.setTexture(backgroundTexture);
 
     if (!font.loadFromFile("font/font.ttf")) {
-        std::cerr << "Error: Could not load font!" << std::endl;
-        exit(1);
+        throw FileNotFoundException("quiz font");
     }
 
     questionText.setFont(font);

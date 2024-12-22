@@ -1,10 +1,10 @@
 #include "../headers/gameboard.h"
+#include "../headers/gameexception.h"
 #include <iostream>
 
 GameBoard::GameBoard() : cardsWindow(sf::VideoMode::getFullscreenModes()[0], "Memory Game: Two by two", sf::Style::Close) {
     if (!backgroundTexture.loadFromFile("Images/background.png")) {
-        std::cerr << "Error: background texture " << std::endl;
-        exit(1);
+        throw FileNotFoundException("Gameboard background");
     }
     backgroundSprite.setTexture(backgroundTexture);
     float scaleX = static_cast<float>(cardsWindow.getSize().x) / backgroundTexture.getSize().x;
@@ -33,15 +33,13 @@ void GameBoard::initializeCards() {
     std::vector<std::string> animalNames = {"giraffe", "chameleon", "deer", "owl", "monkey", "parrot"};
 
     if (!backTexture.loadFromFile("Images/cardback.png")) {
-        std::cerr << "Error: backcard texture" << std::endl;
-        exit(1);
+        throw FileNotFoundException("cardback image");
     }
 
     for (const auto& animalName : animalNames) {
         sf::Texture frontTexture;
         if (!frontTexture.loadFromFile("Images/" + animalName + ".png")) {
-            std::cerr << "Error: front texture " << animalName << std::endl;
-            exit(1);
+            throw FileNotFoundException("card image");
         }
         frontTextures.push_back(std::make_shared<sf::Texture>(frontTexture));
 

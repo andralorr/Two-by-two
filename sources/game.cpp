@@ -1,5 +1,7 @@
 #include "../headers/game.h"
 #include "../headers/question.h"
+#include "../headers/gameexception.h"
+#include "../headers/gamemessage.h"
 #include <iostream>
 
 Game::Game(): timer(50) {
@@ -97,7 +99,7 @@ void Game::handleQuizOptionSelection(sf::Event::MouseButtonEvent) {
                 resetGameAfterWrongAnswer();
             }
         } else {
-            std::cerr << "Error: currentQuestion is null!" << std::endl;
+            throw InvalidStateException("No question available for the selected card");
         }
     }
 }
@@ -133,19 +135,20 @@ void Game::update() {
         if (isQuizActive)
             gameBoardQuiz.getWindowQuiz().close();
 
-        FailureMessage failureMessage(gameBoard.getWindow());
-        failureMessage.display();
+        gameMessage = new FailureMessage(gameBoard.getWindow());
+        gameMessage->display();
 
-        if (failureMessage.isRestartClicked()) {
+        if (dynamic_cast<FailureMessage*>(gameMessage) && dynamic_cast<FailureMessage*>(gameMessage)->isRestartClicked()) {
             restartGame();
+            delete gameMessage;
             return;
         }
     }
 
     if (allQuestionsAnsweredCorrectly()) {
-        SuccessMessage successMessage(gameBoard.getWindow());
-        successMessage.display();
-        return;
+        gameMessage = new SuccessMessage(gameBoard.getWindow());
+        gameMessage->display();
+        delete gameMessage;
     }
 
     if (isCheckingMatch && !isQuizActive) {
@@ -227,21 +230,45 @@ bool Game::allQuestionsAnsweredCorrectly() {
 }
 
 void Game::restartGame() {
+    Game savedGame(*this);
+
+    timer.reset(50);
     isQuizActive = false;
     isGameOver = false;
-    timer.reset(50);
+
     firstFlippedCard = nullptr;
     secondFlippedCard = nullptr;
-    isCheckingMatch = false;
+    currentQuestion = nullptr;
     answeredQuestions.clear();
+
     gameBoard.shuffleCards();
+
     for (auto& card : gameBoard.getCards()) {
         card.setMatched(false);
         if (card.is_flipped()) {
             card.flip();
         }
     }
+
     Question::initializeQuestions();
 
     std::cout << "Game has been restarted!" << std::endl;
+    *this = savedGame;
+}
+
+Game& Game::operator=(const Game& other) {
+    if (this == &other) {
+        return *this;
+    }
+    timer = other.timer;
+    isQuizActive = other.isQuizActive;
+    currentQuestion = other.currentQuestion;
+    isGameOver = other.isGameOver;
+
+    answeredQuestions = other.answeredQuestions;
+    firstFlippedCard = other.firstFlippedCard;
+    secondFlippedCard = other.secondFlippedCard;
+    isCheckingMatch = other.isCheckingMatch;
+
+    return *this;
 }
