@@ -14,7 +14,7 @@ private:
     GameBoard gameBoard;
     Timer timer;
     GameBoardQuiz gameBoardQuiz;
-    Question question;
+    Question question_;
     Question* currentQuestion;
     Card* firstFlippedCard = nullptr;
     Card* secondFlippedCard = nullptr;

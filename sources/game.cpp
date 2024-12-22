@@ -3,7 +3,7 @@
 #include <iostream>
 
 Game::Game(): timer(50) {
-    question.initializeQuestions();
+    question_.initializeQuestions();
     isQuizActive = false;
     currentQuestion = nullptr;
     isGameOver = false;
