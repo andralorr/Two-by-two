@@ -35,7 +35,6 @@ private:
 public:
     explicit StartMessage(sf::RenderWindow& win);
     void display() override;
-    std::unique_ptr<GameMessage> clone() const override;
 };
 
 class SuccessMessage : public GameMessage {
