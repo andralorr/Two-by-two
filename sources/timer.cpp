@@ -50,9 +50,6 @@ void Timer::render(sf::RenderWindow& window) const {
     window.draw(timeText);
 }
 
-int Timer::getTimeRemaining() const {
-    return timeRemaining;
-}
 
 bool Timer::isTimeUp() const {
     return timeRemaining <= 0;

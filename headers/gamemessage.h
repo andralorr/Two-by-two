@@ -31,7 +31,6 @@ private:
 public:
     explicit StartMessage(sf::RenderWindow& win);
     void display() override;
-    bool isStartClicked() const;
 };
 
 class SuccessMessage : public GameMessage {

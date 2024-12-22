@@ -211,9 +211,9 @@ std::ostream& operator<<(std::ostream& os, const Game& game) {
 bool Game::allQuestionsAnsweredCorrectly() {
     std::vector<Question*> allQuestions;
     for (auto& card : gameBoard.getCards()) {
-        Question* question = Question::getQuestionForAnimal(card.getAnimal());
-        if (question && std::find(allQuestions.begin(), allQuestions.end(), question) == allQuestions.end()) {
-            allQuestions.push_back(question);
+        Question* q = Question::getQuestionForAnimal(card.getAnimal());
+        if (q && std::find(allQuestions.begin(), allQuestions.end(), q) == allQuestions.end()) {
+            allQuestions.push_back(q);
         }
     }
 

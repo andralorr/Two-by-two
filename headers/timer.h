@@ -16,7 +16,6 @@ public:
     void updateText();
     void update();
     void render(sf::RenderWindow& window) const;
-    int getTimeRemaining() const;
     bool isTimeUp() const;
     void reset(int initialTime);
 };

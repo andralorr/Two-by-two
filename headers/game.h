@@ -16,7 +16,6 @@ private:
     GameBoardQuiz gameBoardQuiz;
     Question question;
     Question* currentQuestion;
-    GameMessage* gameMessage{};
     Card* firstFlippedCard = nullptr;
     Card* secondFlippedCard = nullptr;
     sf::Clock matchTimer;

@@ -76,10 +76,6 @@ void StartMessage::display() {
     }
 }
 
-bool StartMessage::isStartClicked() const {
-    return startClicked;
-}
-
 SuccessMessage::SuccessMessage(sf::RenderWindow& win)
     : GameMessage("Noah couldn't have done it without you!", win, "Images/success.png") {
     messageText.setCharacterSize(60);
