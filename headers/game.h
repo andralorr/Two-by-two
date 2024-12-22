@@ -5,21 +5,26 @@
 #include "gameboardquiz.h"
 #include "question.h"
 #include "card.h"
+#include "timer.h"
+#include "gamemessage.h"
 #include <SFML/Graphics.hpp>
 
 class Game {
 private:
     GameBoard gameBoard;
+    Timer timer;
     GameBoardQuiz gameBoardQuiz;
     Question question;
     Question* currentQuestion;
+    GameMessage* gameMessage{};
     Card* firstFlippedCard = nullptr;
     Card* secondFlippedCard = nullptr;
     sf::Clock matchTimer;
     bool isCheckingMatch = false;
     bool isQuizActive = false;
     const float matchDelay = 0.3f;
-
+    bool isGameOver = false;
+    std::vector<Question*> answeredQuestions;
 public:
     Game();
     void run();
@@ -39,8 +44,9 @@ public:
     void openQuestionWindow();
     void handleCorrectAnswer();
     void resetGameAfterWrongAnswer();
-
+    bool allQuestionsAnsweredCorrectly();
     friend std::ostream& operator<<(std::ostream& os, const Game& game);
+    void restartGame();
 };
 
 #endif // GAME_H

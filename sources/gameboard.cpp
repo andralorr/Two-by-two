@@ -11,7 +11,6 @@ GameBoard::GameBoard() : cardsWindow(sf::VideoMode::getFullscreenModes()[0], "Me
     float scaleY = static_cast<float>(cardsWindow.getSize().y) / backgroundTexture.getSize().y;
     backgroundSprite.setScale(scaleX, scaleY);
 
-    cardsWindow.setFramerateLimit(60);
     cardsWindow.setVerticalSyncEnabled(true);
 
     initializeCards();
@@ -79,7 +78,6 @@ void GameBoard::render() {
     for (const auto& card : cards) {
         card.draw(cardsWindow);
     }
-    cardsWindow.display();
 }
 
 void GameBoard::shuffleCards() {

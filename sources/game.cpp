@@ -2,14 +2,17 @@
 #include "../headers/question.h"
 #include <iostream>
 
-Game::Game() {
+Game::Game(): timer(50) {
     question.initializeQuestions();
     isQuizActive = false;
     currentQuestion = nullptr;
+    isGameOver = false;
 }
 
 void Game::run() {
-    std::cout << *this << std::endl;
+    StartMessage startMessage(gameBoard.getWindow());
+    startMessage.display();
+
     while (gameBoard.getWindow().isOpen()) {
         processEvents();
         update();
@@ -25,7 +28,7 @@ void Game::processEvents() {
 }
 
 void Game::processGameBoardEvents() {
-    sf::Event event;
+    sf::Event event{};
     while (gameBoard.getWindow().pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
             handleWindowClose(gameBoard.getWindow());
@@ -61,7 +64,7 @@ void Game::handleCardSelection(sf::Event::MouseButtonEvent mouseButton) {
 }
 
 void Game::processQuizEvents() {
-    sf::Event event;
+    sf::Event event{};
     while (gameBoardQuiz.getWindowQuiz().pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
             handleQuizWindowClose();
@@ -87,6 +90,7 @@ void Game::handleQuizOptionSelection(sf::Event::MouseButtonEvent) {
             std::cout << *currentQuestion << std::endl;
             if (currentQuestion->checkAnswer(clickedOption)) {
                 std::cout << "Correct answer!" << std::endl;
+                answeredQuestions.push_back(currentQuestion);
                 handleCorrectAnswer();
             } else {
                 std::cout << "Wrong answer!" << std::endl;
@@ -123,12 +127,33 @@ void Game::resetGameAfterWrongAnswer() {
 }
 
 void Game::update() {
-    if (isCheckingMatch && !isQuizActive) {
-        if (matchTimer.getElapsedTime().asSeconds() >= matchDelay) {
-            handleMatch();
+    timer.update();
+
+    if (timer.isTimeUp()) {
+        if (isQuizActive)
+            gameBoardQuiz.getWindowQuiz().close();
+
+        FailureMessage failureMessage(gameBoard.getWindow());
+        failureMessage.display();
+
+        if (failureMessage.isRestartClicked()) {
+            restartGame();
+            return;
         }
     }
+
+    if (allQuestionsAnsweredCorrectly()) {
+        SuccessMessage successMessage(gameBoard.getWindow());
+        successMessage.display();
+        return;
+    }
+
+    if (isCheckingMatch && !isQuizActive) {
+        if (matchTimer.getElapsedTime().asSeconds() >= matchDelay)
+            handleMatch();
+    }
 }
+
 
 void Game::handleMatch() {
     if (firstFlippedCard && secondFlippedCard) {
@@ -165,13 +190,58 @@ void Game::openQuestionWindow() {
 }
 
 void Game::render() {
+    gameBoard.getWindow().clear();
+
     gameBoard.render();
+
+    timer.render(gameBoard.getWindow());
+
     if (isQuizActive) {
         gameBoardQuiz.render();
     }
+    gameBoard.getWindow().display();
+
 }
 
 std::ostream& operator<<(std::ostream& os, const Game& game) {
     os << "\n GameBoard: " << game.gameBoard << "\n";
     return os;
+}
+
+bool Game::allQuestionsAnsweredCorrectly() {
+    std::vector<Question*> allQuestions;
+    for (auto& card : gameBoard.getCards()) {
+        Question* question = Question::getQuestionForAnimal(card.getAnimal());
+        if (question && std::find(allQuestions.begin(), allQuestions.end(), question) == allQuestions.end()) {
+            allQuestions.push_back(question);
+        }
+    }
+
+    for (auto& question : allQuestions) {
+        if (std::find(answeredQuestions.begin(), answeredQuestions.end(), question) == answeredQuestions.end()) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+void Game::restartGame() {
+    isQuizActive = false;
+    isGameOver = false;
+    timer.reset(50);
+    firstFlippedCard = nullptr;
+    secondFlippedCard = nullptr;
+    isCheckingMatch = false;
+    answeredQuestions.clear();
+    gameBoard.shuffleCards();
+    for (auto& card : gameBoard.getCards()) {
+        card.setMatched(false);
+        if (card.is_flipped()) {
+            card.flip();
+        }
+    }
+    Question::initializeQuestions();
+
+    std::cout << "Game has been restarted!" << std::endl;
 }

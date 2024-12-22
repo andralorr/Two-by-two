@@ -1,7 +1,8 @@
 #include "../headers/gameboardquiz.h"
 #include <iostream>
 
-GameBoardQuiz::GameBoardQuiz() {}
+GameBoardQuiz::GameBoardQuiz()
+= default;
 
 GameBoardQuiz::GameBoardQuiz(const GameBoardQuiz& other) :
     backgroundTexture(other.backgroundTexture),
@@ -13,13 +14,12 @@ GameBoardQuiz::GameBoardQuiz(const GameBoardQuiz& other) :
     optionBoxes(other.optionBoxes)
 {}
 
-GameBoardQuiz::~GameBoardQuiz() {}
+GameBoardQuiz::~GameBoardQuiz() = default;
 
 void GameBoardQuiz::createWindow() {
     if (!quizWindow.isOpen()) {
         quizWindow.create(sf::VideoMode(800, 600), "Question",  sf::Style::Titlebar);
 
-        quizWindow.setFramerateLimit(60);
         quizWindow.setVerticalSyncEnabled(true);
 
         sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
@@ -43,7 +43,7 @@ void GameBoardQuiz::createWindow() {
 
     questionText.setFont(font);
     questionText.setCharacterSize(20);
-    questionText.setFillColor(sf::Color::Blue);
+    questionText.setFillColor(sf::Color(100, 100, 255));
     questionText.setStyle(sf::Text::Bold);
 }
 
@@ -88,7 +88,7 @@ void GameBoardQuiz::positionQuestions() {
 
         sf::RectangleShape optionBox;
         optionBox.setSize(sf::Vector2f(optionBoxWidth, optionBoxHeight));
-        optionBox.setFillColor(sf::Color::Blue);
+        optionBox.setFillColor(sf::Color(100, 100, 255));
 
         float boxX = (800 - optionBoxWidth) / 2;
         float boxY = startY + i * (optionBoxHeight + spacing);
