@@ -230,8 +230,6 @@ bool Game::allQuestionsAnsweredCorrectly() {
 }
 
 void Game::restartGame() {
-    Game savedGame(*this);
-
     timer.reset(50);
     isQuizActive = false;
     isGameOver = false;
@@ -253,22 +251,4 @@ void Game::restartGame() {
     Question::initializeQuestions();
 
     std::cout << "Game has been restarted!" << std::endl;
-    *this = savedGame;
-}
-
-Game& Game::operator=(const Game& other) {
-    if (this == &other) {
-        return *this;
-    }
-    timer = other.timer;
-    isQuizActive = other.isQuizActive;
-    currentQuestion = other.currentQuestion;
-    isGameOver = other.isGameOver;
-
-    answeredQuestions = other.answeredQuestions;
-    firstFlippedCard = other.firstFlippedCard;
-    secondFlippedCard = other.secondFlippedCard;
-    isCheckingMatch = other.isCheckingMatch;
-
-    return *this;
 }
