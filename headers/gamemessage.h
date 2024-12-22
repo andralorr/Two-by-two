@@ -21,7 +21,6 @@ public:
 
     void setBackground(const std::string& bgPath);
 
-    virtual std::unique_ptr<GameMessage> clone() const = 0;
 };
 
 class StartMessage : public GameMessage {
@@ -41,7 +40,6 @@ class SuccessMessage : public GameMessage {
 public:
     explicit SuccessMessage(sf::RenderWindow& win);
     void display() override;
-    std::unique_ptr<GameMessage> clone() const override;
 };
 
 class FailureMessage : public GameMessage {
@@ -56,7 +54,6 @@ public:
     explicit FailureMessage(sf::RenderWindow& win);
     void display() override;
     bool isRestartClicked() const;
-    std::unique_ptr<GameMessage> clone() const override;
 };
 
 #endif

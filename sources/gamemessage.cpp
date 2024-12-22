@@ -100,9 +100,6 @@ void SuccessMessage::display() {
     }
 }
 
-std::unique_ptr<GameMessage> SuccessMessage::clone() const {
-    return std::make_unique<SuccessMessage>(*this);
-}
 
 FailureMessage::FailureMessage(sf::RenderWindow& win)
     : GameMessage("TIME IS UP!", win, "Images/final.png"), restartClicked(false) {
@@ -161,8 +158,4 @@ void FailureMessage::display() {
 
 bool FailureMessage::isRestartClicked() const {
     return restartClicked;
-}
-
-std::unique_ptr<GameMessage> FailureMessage::clone() const {
-    return std::make_unique<FailureMessage>(*this);
 }
