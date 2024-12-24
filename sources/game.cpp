@@ -3,6 +3,7 @@
 #include "../headers/gameexception.h"
 #include "../headers/gamemessage.h"
 #include <iostream>
+#include <memory>
 
 Game::Game(): timer(50) {
     question_.initializeQuestions();
@@ -135,20 +136,20 @@ void Game::update() {
         if (isQuizActive)
             gameBoardQuiz.getWindowQuiz().close();
 
-        gameMessage = new FailureMessage(gameBoard.getWindow());
-        gameMessage->display();
+        std::unique_ptr<GameMessage> message = std::make_unique<FailureMessage>(gameBoard.getWindow());
+        message->display();
 
-        if (dynamic_cast<FailureMessage*>(gameMessage) && dynamic_cast<FailureMessage*>(gameMessage)->isRestartClicked()) {
-            restartGame();
-            delete gameMessage;
-            return;
+        if (auto failureMessage = dynamic_cast<FailureMessage*>(message.get())) {
+            if (failureMessage->isRestartClicked()) {
+                restartGame();
+                return;
+            }
         }
     }
 
     if (allQuestionsAnsweredCorrectly()) {
-        gameMessage = new SuccessMessage(gameBoard.getWindow());
-        gameMessage->display();
-        delete gameMessage;
+        std::unique_ptr<GameMessage> message = std::make_unique<SuccessMessage>(gameBoard.getWindow());
+        message->display();
     }
 
     if (isCheckingMatch && !isQuizActive) {
@@ -250,5 +251,5 @@ void Game::restartGame() {
 
     Question::initializeQuestions();
 
-    std::cout << "Game has been restarted!" << std::endl;
+    std::cout << "\n\nGame has been restarted!\n\n" << std::endl;
 }
