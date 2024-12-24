@@ -139,7 +139,7 @@ void Game::update() {
         std::unique_ptr<GameMessage> message = std::make_unique<FailureMessage>(gameBoard.getWindow());
         message->display();
 
-        if (auto failureMessage = dynamic_cast<FailureMessage*>(message.get())) {
+    if (auto failureMessage = dynamic_cast<const FailureMessage*>(message.get())) {
             if (failureMessage->isRestartClicked()) {
                 restartGame();
                 return;
