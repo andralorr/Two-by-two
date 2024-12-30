@@ -1,7 +1,7 @@
-#ifndef GAMEMESSAGE_H
-#define GAMEMESSAGE_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
+#include <memory>
 #include <string>
 
 class GameMessage {
@@ -12,47 +12,39 @@ protected:
     sf::Texture backgroundTexture;
     sf::Sprite backgroundSprite;
 
+    float titleOffsetY = 0.0f;
+    virtual void customizeDisplay();
+
 public:
+    explicit GameMessage(sf::RenderWindow& win, const std::string& bgPath);
     virtual ~GameMessage() = default;
 
-    GameMessage(const std::string& message, sf::RenderWindow& win, const std::string& bgPath);
-    virtual void display() = 0;
-
-    void setBackground(const std::string& bgPath);
-
+    virtual void display();
+    virtual std::unique_ptr<GameMessage> clone() const = 0;
 };
 
 class StartMessage : public GameMessage {
-private:
-    sf::RectangleShape startButton;
     sf::Text buttonText;
-    bool startClicked;
-
-    void setupStartText();
 
 public:
-    explicit StartMessage(sf::RenderWindow& win);
-    void display() override;
+    StartMessage(sf::RenderWindow& win, const std::string& bgPath);
+    void customizeDisplay() override;
+    std::unique_ptr<GameMessage> clone() const override;
 };
 
 class SuccessMessage : public GameMessage {
 public:
-    explicit SuccessMessage(sf::RenderWindow& win);
-    void display() override;
+    SuccessMessage(sf::RenderWindow& win, const std::string& bgPath);
+    void customizeDisplay() override;
+    std::unique_ptr<GameMessage> clone() const override;
 };
 
 class FailureMessage : public GameMessage {
-private:
-    sf::RectangleShape restartButton;
     sf::Text buttonText;
-    bool restartClicked;
-
-    void setupRestartButton();
+    sf::RectangleShape buttonShape;
 
 public:
-    explicit FailureMessage(sf::RenderWindow& win);
-    void display() override;
-    bool isRestartClicked() const;
+    FailureMessage(sf::RenderWindow& win, const std::string& bgPath);
+    void customizeDisplay() override;
+    std::unique_ptr<GameMessage> clone() const override;
 };
-
-#endif

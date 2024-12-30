@@ -5,22 +5,36 @@
 #include <iostream>
 #include <memory>
 
-Game::Game(): timer(50) {
+Game::Game(): timer(3) {
     question_.initializeQuestions();
     isQuizActive = false;
     currentQuestion = nullptr;
     isGameOver = false;
 }
 
+
 void Game::run() {
-    StartMessage startMessage(gameBoard.getWindow());
-    startMessage.display();
+    addMessage(std::make_unique<StartMessage>(gameBoard.getWindow(), "Images/start.png"));
+    displayMessages();
+
+    if (isGameOver) return;
 
     while (gameBoard.getWindow().isOpen()) {
         processEvents();
         update();
         render();
     }
+}
+
+void Game::addMessage(std::unique_ptr<GameMessage> message) {
+    messages.push_back(std::move(message));
+}
+
+void Game::displayMessages() {
+    for (auto& message : messages) {
+        message->display();
+    }
+    messages.clear();
 }
 
 void Game::processEvents() {
@@ -133,28 +147,23 @@ void Game::update() {
     timer.update();
 
     if (timer.isTimeUp()) {
-        if (isQuizActive)
-            gameBoardQuiz.getWindowQuiz().close();
+        addMessage(std::make_unique<FailureMessage>(gameBoard.getWindow(), "Images/final.png"));
+        displayMessages();
 
-        std::unique_ptr<GameMessage> message = std::make_unique<FailureMessage>(gameBoard.getWindow());
-        message->display();
-
-    if (auto failureMessage = dynamic_cast<const FailureMessage*>(message.get())) {
-            if (failureMessage->isRestartClicked()) {
-                restartGame();
-                return;
-            }
-        }
+        if (isGameOver) return;
+        restartGame();
+        return;
     }
 
     if (allQuestionsAnsweredCorrectly()) {
-        std::unique_ptr<GameMessage> message = std::make_unique<SuccessMessage>(gameBoard.getWindow());
-        message->display();
+        addMessage(std::make_unique<SuccessMessage>(gameBoard.getWindow(), "Images/success.png"));
+        displayMessages();
     }
 
     if (isCheckingMatch && !isQuizActive) {
-        if (matchTimer.getElapsedTime().asSeconds() >= matchDelay)
+        if (matchTimer.getElapsedTime().asSeconds() >= matchDelay) {
             handleMatch();
+        }
     }
 }
 
@@ -231,7 +240,7 @@ bool Game::allQuestionsAnsweredCorrectly() {
 }
 
 void Game::restartGame() {
-    timer.reset(50);
+    timer.reset(120);
     isQuizActive = false;
     isGameOver = false;
 

@@ -15,7 +15,6 @@ private:
     Timer timer;
     GameBoardQuiz gameBoardQuiz;
     Question question_;
-    GameMessage* gameMessage{};
     Question* currentQuestion;
     Card* firstFlippedCard = nullptr;
     Card* secondFlippedCard = nullptr;
@@ -25,6 +24,7 @@ private:
     const float matchDelay = 0.3f;
     bool isGameOver = false;
     std::vector<Question*> answeredQuestions;
+    std::vector<std::unique_ptr<GameMessage>> messages;
 public:
     Game();
     void run();
@@ -46,8 +46,9 @@ public:
     void resetGameAfterWrongAnswer();
     bool allQuestionsAnsweredCorrectly();
     friend std::ostream& operator<<(std::ostream& os, const Game& game);
-    Game& operator=(const Game& other);
     void restartGame();
+    void addMessage(std::unique_ptr<GameMessage> message);
+    void displayMessages();
 };
 
 #endif // GAME_H
