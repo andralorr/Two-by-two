@@ -5,7 +5,7 @@
 #include <iostream>
 #include <memory>
 
-Game::Game(): timer(3) {
+Game::Game(): timer(120) {
     question_.initializeQuestions();
     isQuizActive = false;
     currentQuestion = nullptr;

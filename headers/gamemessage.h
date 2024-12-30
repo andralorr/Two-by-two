@@ -20,7 +20,6 @@ public:
     virtual ~GameMessage() = default;
 
     virtual void display();
-    virtual std::unique_ptr<GameMessage> clone() const = 0;
 };
 
 class StartMessage : public GameMessage {
@@ -29,14 +28,12 @@ class StartMessage : public GameMessage {
 public:
     StartMessage(sf::RenderWindow& win, const std::string& bgPath);
     void customizeDisplay() override;
-    std::unique_ptr<GameMessage> clone() const override;
 };
 
 class SuccessMessage : public GameMessage {
 public:
     SuccessMessage(sf::RenderWindow& win, const std::string& bgPath);
     void customizeDisplay() override;
-    std::unique_ptr<GameMessage> clone() const override;
 };
 
 class FailureMessage : public GameMessage {
@@ -46,5 +43,4 @@ class FailureMessage : public GameMessage {
 public:
     FailureMessage(sf::RenderWindow& win, const std::string& bgPath);
     void customizeDisplay() override;
-    std::unique_ptr<GameMessage> clone() const override;
 };

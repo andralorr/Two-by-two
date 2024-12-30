@@ -65,10 +65,6 @@ void StartMessage::customizeDisplay() {
     window.draw(buttonText);
 }
 
-std::unique_ptr<GameMessage> StartMessage::clone() const {
-    return std::make_unique<StartMessage>(*this);
-}
-
 SuccessMessage::SuccessMessage(sf::RenderWindow& win, const std::string& bgPath)
     : GameMessage(win, bgPath) {
     messageText.setFont(font);
@@ -83,10 +79,6 @@ SuccessMessage::SuccessMessage(sf::RenderWindow& win, const std::string& bgPath)
     );
 }
 void SuccessMessage::customizeDisplay() {}
-
-std::unique_ptr<GameMessage> SuccessMessage::clone() const {
-    return std::make_unique<SuccessMessage>(*this);
-}
 
 FailureMessage::FailureMessage(sf::RenderWindow& win, const std::string& bgPath)
     : GameMessage(win, bgPath) {
@@ -128,6 +120,3 @@ void FailureMessage::customizeDisplay() {
     window.draw(buttonText);
 }
 
-std::unique_ptr<GameMessage> FailureMessage::clone() const {
-    return std::make_unique<FailureMessage>(*this);
-}
