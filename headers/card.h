@@ -16,7 +16,6 @@ public:
     Card(const std::string &animal, sf::Texture& frontTexture, sf::Texture& backTexture);
     Card(const Card& other);
     Card& operator=(const Card& other);
-    ~Card();
 
     const std::string& getAnimal() const;
     void draw(sf::RenderWindow& window) const;
@@ -26,6 +25,7 @@ public:
     void setPosition(float x, float y);
     sf::FloatRect getGlobalBounds() const;
     friend std::ostream& operator<<(std::ostream& os, const Card& card);
+    virtual ~Card() = default;
 protected:
     virtual std::unique_ptr<Card> clone() const {
         return std::make_unique<Card>(*this);

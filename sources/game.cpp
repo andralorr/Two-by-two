@@ -204,7 +204,7 @@ void Game::handleMatch() {
         if (firstFlippedCard->getAnimal() == secondFlippedCard->getAnimal()) {
             copiedFirstCard = firstFlippedCard->clone();
             auto it = QuestionFactory::animalToQuestionMap.find(firstFlippedCard->getAnimal());
-            if (it != nullptr) {
+            if (it != QuestionFactory::animalToQuestionMap.end()) {
                 currentQuestion = it->second.get();
                 firstFlippedCard->setMatched(true);
                 secondFlippedCard->setMatched(true);

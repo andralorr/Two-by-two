@@ -17,8 +17,6 @@ Card::Card(const Card& other) :
     matched(other.matched), isFlipped(other.isFlipped)
 {}
 
-Card::~Card() {};
-
 const std::string& Card::getAnimal() const {
     return animal;
 }

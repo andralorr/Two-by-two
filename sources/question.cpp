@@ -27,8 +27,7 @@ const std::vector<std::string>& ThreeOptionsQuestion::getOptions() const {
 }
 
 TrueFalseQuestion::TrueFalseQuestion(const std::string& questionText, bool correctAnswer)
-    : Question(questionText), correctAnswer(correctAnswer) {
-    options = {"False", "True"};
+    : Question(questionText), correctAnswer(correctAnswer), options{"False", "True"} {
 }
 
 bool TrueFalseQuestion::checkAnswer(int answerIndex) const {
@@ -59,9 +58,6 @@ void QuestionFactory::loadThreeOptionsQuestions(const std::string& filePath) {
         if (line.empty()) continue;
 
         std::string animal = line;
-        if (animal.empty()) {
-            throw std::runtime_error("Missing animal name in three-options questions.");
-        }
         std::cout << "Reading animal name: " << animal << std::endl;
 
         std::getline(file, line);
