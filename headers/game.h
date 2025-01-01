@@ -26,7 +26,9 @@ private:
     std::vector<std::unique_ptr<GameMessage>> messages;
     sf::Clock matchTimer;
     const float matchDelay = 0.3f;
+    std::vector<std::string> correctlyAnsweredAnimals;
 
+    std::unique_ptr<Card> copiedFirstCard;
 public:
     Game();
     void run();

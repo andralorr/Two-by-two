@@ -18,7 +18,6 @@ public:
     virtual ~Question() = default;
 
     virtual bool checkAnswer(int answerIndex) const = 0;
-    virtual std::unique_ptr<Question> clone() const = 0;
 
     const std::string& getQuestionText() const;
     virtual const std::vector<std::string>& getOptions() const = 0;
@@ -33,7 +32,6 @@ public:
                          const std::vector<std::string>& options,
                          int correctAnswer);
     bool checkAnswer(int answerIndex) const override;
-    std::unique_ptr<Question> clone() const override;
     const std::vector<std::string>& getOptions() const override;
 };
 
@@ -44,13 +42,14 @@ class TrueFalseQuestion : public Question {
 public:
     TrueFalseQuestion(const std::string& questionText, bool correctAnswer);
     bool checkAnswer(int answerIndex) const override;
-    std::unique_ptr<Question> clone() const override;
     const std::vector<std::string>& getOptions() const override;
 };
 
 class QuestionFactory {
 public:
-    static void loadQuestionsFromFile(const std::string& filePath);
+    static void loadQuestionsFromFile(const std::string& filePath1, const std::string& filePath2);
+    static void loadThreeOptionsQuestions(const std::string& filePath);
+    static void loadTrueFalseQuestions(const std::string& filePath);
     static std::unordered_map<std::string, std::unique_ptr<Question>> animalToQuestionMap;
 };
 #endif // QUESTION_H

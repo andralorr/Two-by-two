@@ -1,6 +1,7 @@
 #include "../headers/gameboard.h"
 #include "../headers/gameexception.h"
 #include "../headers/question.h"
+#include "../headers/game.h"
 #include <iostream>
 
 GameBoard::GameBoard() : cardsWindow(sf::VideoMode::getFullscreenModes()[0], "Memory Game: Two by two", sf::Style::Close) {
@@ -31,11 +32,21 @@ GameBoard::GameBoard(const GameBoard& other) :
 GameBoard::~GameBoard() {}
 
 void GameBoard::initializeCards() {
+    cards.clear();
+
     if (!backTexture.loadFromFile("Images/assets/cardback.png")) {
         throw FileNotFoundException("cardback image");
     }
 
-    for (const auto& [animal, question] : QuestionFactory::animalToQuestionMap) {
+    std::vector<std::string> allAnimals;
+    for (const auto& [animal, _] : QuestionFactory::animalToQuestionMap) {
+        allAnimals.push_back(animal);
+    }
+
+    std::random_shuffle(allAnimals.begin(), allAnimals.end());
+    currentRoundAnimals.assign(allAnimals.begin(), allAnimals.begin() + 6);
+
+    for (const auto& animal : currentRoundAnimals) {
         sf::Texture frontTexture;
         if (!frontTexture.loadFromFile("Images/animals/" + animal + ".png")) {
             throw FileNotFoundException("Image for animal: " + animal);

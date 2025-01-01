@@ -18,13 +18,13 @@ GameBoardQuiz::~GameBoardQuiz() = default;
 
 void GameBoardQuiz::createWindow() {
     if (!quizWindow.isOpen()) {
-        quizWindow.create(sf::VideoMode(800, 600), "Question",  sf::Style::Titlebar);
+        quizWindow.create(sf::VideoMode(1100, 600), "Question", sf::Style::Titlebar);
 
         quizWindow.setVerticalSyncEnabled(true);
 
         sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
         sf::Vector2i position(
-            (desktop.width - 800) / 2,
+            (desktop.width - 1100) / 2,
             (desktop.height - 600) / 2
         );
         quizWindow.setPosition(position);
@@ -35,12 +35,16 @@ void GameBoardQuiz::createWindow() {
     }
     backgroundSprite.setTexture(backgroundTexture);
 
+    float scaleX = static_cast<float>(quizWindow.getSize().x) / backgroundTexture.getSize().x;
+    float scaleY = static_cast<float>(quizWindow.getSize().y) / backgroundTexture.getSize().y;
+    backgroundSprite.setScale(scaleX, scaleY);
+
     if (!font.loadFromFile("font/font.ttf")) {
         throw FileNotFoundException("quiz font");
     }
 
     questionText.setFont(font);
-    questionText.setCharacterSize(20);
+    questionText.setCharacterSize(24);
     questionText.setFillColor(sf::Color(100, 100, 255));
     questionText.setStyle(sf::Text::Bold);
 }
@@ -54,12 +58,14 @@ void GameBoardQuiz::positionQuestions() {
     optionTexts.clear();
     optionBoxes.clear();
 
+    const int windowWidth = quizWindow.getSize().x;
+
     if (currentQuestion == nullptr) {
-        questionText.setString("No question available");
+        questionText.setString("No question available (gameboardquiz)");
         sf::FloatRect textBounds = questionText.getLocalBounds();
         questionText.setPosition(
-            (800 - textBounds.width) / 2,
-            50
+            (windowWidth - textBounds.width) / 2,
+            80
         );
         return;
     }
@@ -67,14 +73,14 @@ void GameBoardQuiz::positionQuestions() {
     questionText.setString(currentQuestion->getQuestionText());
     sf::FloatRect questionBounds = questionText.getLocalBounds();
     questionText.setPosition(
-        (800 - questionBounds.width) / 2,
-        50
+        (windowWidth - questionBounds.width) / 2,
+        100
     );
 
-    const float optionBoxWidth = 500.0f;
+    const float optionBoxWidth = static_cast<float>(windowWidth) * 0.4f;
     const float optionBoxHeight = 50.0f;
     const float spacing = 20.0f;
-    const float startY = 150.0f;
+    const float startY = 180.0f;
 
     std::vector<std::string> options = currentQuestion->getOptions();
     for (size_t i = 0; i < options.size(); ++i) {
@@ -88,7 +94,7 @@ void GameBoardQuiz::positionQuestions() {
         optionBox.setSize(sf::Vector2f(optionBoxWidth, optionBoxHeight));
         optionBox.setFillColor(sf::Color(100, 100, 255));
 
-        float boxX = (800 - optionBoxWidth) / 2;
+        float boxX = (windowWidth - optionBoxWidth) / 2;
         float boxY = startY + i * (optionBoxHeight + spacing);
         optionBox.setPosition(boxX, boxY);
 

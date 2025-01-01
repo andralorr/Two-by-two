@@ -1,0 +1,59 @@
+ant
+Some ants can explode themselves to protect their colony.
+1
+
+bee
+Honeybees can recognize human faces.
+1
+
+butterfly
+Butterflies taste with their feet.
+1
+
+cat
+Cats will ignore you for days if you don't give them their favorite brand of tuna.
+0
+
+cow
+Cows can sleep standing up, but they only dream when lying down.
+1
+
+crab
+Crabs can tap dance to the rhythm of the ocean waves.
+0
+
+pigeon
+Pigeons can perform magic tricks at birthday parties.
+0
+
+rabbit
+Rabbits can see behind themselves without turning their heads.
+1
+
+sheep
+Sheep and wolves are best friends and often have picnics together.
+0
+
+snail
+Snails attend skincare conferences to share the latest trends in slime technology.
+0
+
+snake
+Snakes shed their skin multiple times a year.
+1
+
+spider
+Spiders have dance competitions to impress potential mates.
+1
+
+squirrel
+Squirrels have secret stash maps to remember where they hide their nuts.
+0
+
+turtle
+Turtles wear their shells like backpacks and can take them off whenever they want.
+0
+
+zebra
+No two zebras have the same stripe pattern.
+1

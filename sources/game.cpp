@@ -7,8 +7,6 @@
 
 Game::Game(): timer(120) {
     std::cout << "Initializing game...\n";
-    QuestionFactory::loadQuestionsFromFile("Init/questions.txt");
-    std::cout << "Questions loaded successfully.\n";
     isQuizActive = false;
     currentQuestion = nullptr;
     isGameOver = false;
@@ -68,7 +66,7 @@ void Game::handleCardSelection(sf::Event::MouseButtonEvent mouseButton) {
         sf::Vector2i mousePosition = sf::Mouse::getPosition(gameBoard.getWindow());
         Card* clickedCard = gameBoard.getCardAtPosition(mousePosition);
 
-        if (clickedCard && !clickedCard->isMatched() && clickedCard != firstFlippedCard) {
+        if (clickedCard && !clickedCard->isMatched() &&  clickedCard != firstFlippedCard) {
             clickedCard->flip();
 
             if (!firstFlippedCard) {
@@ -106,8 +104,8 @@ void Game::handleQuizOptionSelection(sf::Event::MouseButtonEvent) {
 
     if (clickedOption != -1) {
         if (currentQuestion) {
-            if (auto singleChoice = dynamic_cast<ThreeOptionsQuestion*>(currentQuestion)) {
-                if (singleChoice->checkAnswer(clickedOption)) {
+            if (const auto* threeOptions = dynamic_cast<ThreeOptionsQuestion*>(currentQuestion)) {
+                if (threeOptions->checkAnswer(clickedOption)) {
                     std::cout << "Correct answer!" << std::endl;
                     answeredQuestions.push_back(currentQuestion);
                     handleCorrectAnswer();
@@ -115,7 +113,7 @@ void Game::handleQuizOptionSelection(sf::Event::MouseButtonEvent) {
                     std::cout << "Wrong answer!" << std::endl;
                     resetGameAfterWrongAnswer();
                 }
-            } else if (auto trueFalse = dynamic_cast<TrueFalseQuestion*>(currentQuestion)) {
+            } else if (const auto* trueFalse = dynamic_cast<TrueFalseQuestion*>(currentQuestion)) {
                 if (trueFalse->checkAnswer(clickedOption)) {
                     std::cout << "Correct answer!" << std::endl;
                     answeredQuestions.push_back(currentQuestion);
@@ -134,8 +132,25 @@ void Game::handleQuizOptionSelection(sf::Event::MouseButtonEvent) {
 void Game::handleCorrectAnswer() {
     gameBoardQuiz.getWindowQuiz().close();
     isQuizActive = false;
+
+    if (copiedFirstCard) {
+        const std::string& animal = copiedFirstCard->getAnimal();
+
+        if (!animal.empty() &&
+            std::find(correctlyAnsweredAnimals.begin(), correctlyAnsweredAnimals.end(), animal) == correctlyAnsweredAnimals.end()) {
+            correctlyAnsweredAnimals.push_back(animal);
+            std::cout << "Added to correctlyAnsweredAnimals: " << animal << std::endl;
+            } else {
+                std::cout << "Animal already in correctlyAnsweredAnimals or empty: " << animal << std::endl;
+            }
+    } else {
+        std::cerr << "Error: Copied card is null." << std::endl;
+    }
+
+    copiedFirstCard = nullptr;
     currentQuestion = nullptr;
 }
+
 
 void Game::resetGameAfterWrongAnswer() {
     gameBoardQuiz.getWindowQuiz().close();
@@ -143,14 +158,16 @@ void Game::resetGameAfterWrongAnswer() {
     currentQuestion = nullptr;
     gameBoard.shuffleCards();
 
-    QuestionFactory::loadQuestionsFromFile("Init/questions.txt");
+    QuestionFactory::loadQuestionsFromFile("Init/questions.txt", "Init/truefalse.txt");
     gameBoard.getCards().clear();
     gameBoard.initializeCards();
 
     firstFlippedCard = nullptr;
     secondFlippedCard = nullptr;
     isCheckingMatch = false;
+    correctlyAnsweredAnimals.clear();
 }
+
 
 void Game::update() {
     timer.update();
@@ -165,8 +182,10 @@ void Game::update() {
     }
 
     if (allQuestionsAnsweredCorrectly()) {
+        std::cout << "All questions answered correctly! Displaying success message." << std::endl;
         addMessage(std::make_unique<SuccessMessage>(gameBoard.getWindow(), "Images/assets/success.png"));
         displayMessages();
+        isGameOver = true;
     }
 
     if (isCheckingMatch && !isQuizActive) {
@@ -183,8 +202,9 @@ void Game::handleMatch() {
         std::cout << *firstFlippedCard << std::endl;
         std::cout << *secondFlippedCard << std::endl;
         if (firstFlippedCard->getAnimal() == secondFlippedCard->getAnimal()) {
+            copiedFirstCard = firstFlippedCard->clone();
             auto it = QuestionFactory::animalToQuestionMap.find(firstFlippedCard->getAnimal());
-            if (it != QuestionFactory::animalToQuestionMap.end()) {
+            if (it != nullptr) {
                 currentQuestion = it->second.get();
                 firstFlippedCard->setMatched(true);
                 secondFlippedCard->setMatched(true);
@@ -230,8 +250,10 @@ std::ostream& operator<<(std::ostream& os, const Game& game) {
 }
 
 bool Game::allQuestionsAnsweredCorrectly() {
-    for (const auto& [animal, question] : QuestionFactory::animalToQuestionMap) {
-        if (std::find(answeredQuestions.begin(), answeredQuestions.end(), question.get()) == answeredQuestions.end()) {
+    const std::vector<std::string>& roundAnimals = gameBoard.getCurrentRoundAnimals();
+
+    for (const auto& animal : roundAnimals) {
+        if (std::find(correctlyAnsweredAnimals.begin(), correctlyAnsweredAnimals.end(), animal) == correctlyAnsweredAnimals.end()) {
             return false;
         }
     }
@@ -247,8 +269,7 @@ void Game::restartGame() {
     secondFlippedCard = nullptr;
     currentQuestion = nullptr;
     answeredQuestions.clear();
-
-    QuestionFactory::loadQuestionsFromFile("Init/questions.txt");
+    correctlyAnsweredAnimals.clear();
 
     gameBoard.getCards().clear();
     gameBoard.initializeCards();

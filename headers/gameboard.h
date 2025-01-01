@@ -15,6 +15,7 @@ private:
     sf::Texture backTexture;
     std::vector<std::shared_ptr<sf::Texture>> frontTextures;
     std::vector<Card> cards;
+    std::vector<std::string> currentRoundAnimals;
 
 public:
     GameBoard();
@@ -27,7 +28,7 @@ public:
     void render();
     void shuffleCards();
     std::vector<Card>& getCards();
-
+    const std::vector<std::string>& getCurrentRoundAnimals() const { return currentRoundAnimals;}
     sf::RenderWindow& getWindow();
     Card* getCardAtPosition(sf::Vector2i position);
     friend std::ostream& operator<<(std::ostream& os, const GameBoard& gameBoard);
