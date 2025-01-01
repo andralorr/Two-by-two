@@ -27,7 +27,7 @@ const std::vector<std::string>& ThreeOptionsQuestion::getOptions() const {
 }
 
 TrueFalseQuestion::TrueFalseQuestion(const std::string& questionText, bool correctAnswer)
-    : Question(questionText), correctAnswer(correctAnswer), options{"False", "True"} {
+    : Question(questionText),options{"False", "True"}, correctAnswer(correctAnswer) {
 }
 
 bool TrueFalseQuestion::checkAnswer(int answerIndex) const {
