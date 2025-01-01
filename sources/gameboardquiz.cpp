@@ -77,7 +77,7 @@ void GameBoardQuiz::positionQuestions() {
         100
     );
 
-    const float optionBoxWidth = static_cast<float>(windowWidth) * 0.4f;
+    const float optionBoxWidth = static_cast<float>(windowWidth) * 0.5f;
     const float optionBoxHeight = 50.0f;
     const float spacing = 20.0f;
     const float startY = 180.0f;

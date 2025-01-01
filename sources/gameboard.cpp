@@ -3,6 +3,7 @@
 #include "../headers/question.h"
 #include "../headers/game.h"
 #include <iostream>
+#include <random>
 
 GameBoard::GameBoard() : cardsWindow(sf::VideoMode::getFullscreenModes()[0], "Memory Game: Two by two", sf::Style::Close) {
     if (!backgroundTexture.loadFromFile("Images/assets/background.png")) {
@@ -43,7 +44,9 @@ void GameBoard::initializeCards() {
         allAnimals.push_back(animal);
     }
 
-    std::random_shuffle(allAnimals.begin(), allAnimals.end());
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(allAnimals.begin(), allAnimals.end(), g);
     currentRoundAnimals.assign(allAnimals.begin(), allAnimals.begin() + 6);
 
     for (const auto& animal : currentRoundAnimals) {
