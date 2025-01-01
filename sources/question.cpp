@@ -111,9 +111,6 @@ void QuestionFactory::loadTrueFalseQuestions(const std::string& filePath) {
         if (line.empty()) continue;
 
         std::string animal = line;
-        if (animal.empty()) {
-            throw std::runtime_error("Missing animal name in true/false questions.");
-        }
         std::cout << "Reading animal name: " << animal << std::endl;
 
         std::getline(file, line);
