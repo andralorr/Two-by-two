@@ -1,54 +1,55 @@
-#ifndef GAME_H
-#define GAME_H
+#pragma once
 
 #include "gameboard.h"
 #include "gameboardquiz.h"
-#include "question.h"
-#include "card.h"
 #include "timer.h"
 #include "gamemessage.h"
-#include <SFML/Graphics.hpp>
+#include "question.h"
+#include <vector>
+#include <memory>
+
 
 class Game {
 private:
     GameBoard gameBoard;
-    Timer timer;
     GameBoardQuiz gameBoardQuiz;
-    Question question_;
+    Timer timer;
+    bool isQuizActive;
+    bool isGameOver;
+
+    Card* firstFlippedCard=nullptr;
+    Card* secondFlippedCard=nullptr;
     Question* currentQuestion;
-    Card* firstFlippedCard = nullptr;
-    Card* secondFlippedCard = nullptr;
-    sf::Clock matchTimer;
-    bool isCheckingMatch = false;
-    bool isQuizActive = false;
-    const float matchDelay = 0.3f;
-    bool isGameOver = false;
+    bool isCheckingMatch=false;
+
     std::vector<Question*> answeredQuestions;
     std::vector<std::unique_ptr<GameMessage>> messages;
+    sf::Clock matchTimer;
+    const float matchDelay = 0.3f;
+
 public:
     Game();
     void run();
-    void processEvents();
     void update();
     void render();
+    void restartGame();
 
+    void addMessage(std::unique_ptr<GameMessage> message);
+    void displayMessages();
+    void processEvents();
     void processGameBoardEvents();
     void processQuizEvents();
+    void handleCardSelection(sf::Event::MouseButtonEvent mouseButton);
 
     static void handleWindowClose(sf::RenderWindow& window);
-    void handleCardSelection(sf::Event::MouseButtonEvent mouseButton);
     void handleQuizWindowClose();
-    void handleQuizOptionSelection(sf::Event::MouseButtonEvent);
-
+    void handleQuizOptionSelection(sf::Event::MouseButtonEvent mouseButton);
     void handleMatch();
     void openQuestionWindow();
     void handleCorrectAnswer();
     void resetGameAfterWrongAnswer();
-    bool allQuestionsAnsweredCorrectly();
-    friend std::ostream& operator<<(std::ostream& os, const Game& game);
-    void restartGame();
-    void addMessage(std::unique_ptr<GameMessage> message);
-    void displayMessages();
-};
 
-#endif // GAME_H
+    friend std::ostream& operator<<(std::ostream& os, const Game& game);
+
+    bool allQuestionsAnsweredCorrectly();
+};

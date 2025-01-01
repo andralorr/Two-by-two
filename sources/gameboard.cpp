@@ -1,9 +1,10 @@
 #include "../headers/gameboard.h"
 #include "../headers/gameexception.h"
+#include "../headers/question.h"
 #include <iostream>
 
 GameBoard::GameBoard() : cardsWindow(sf::VideoMode::getFullscreenModes()[0], "Memory Game: Two by two", sf::Style::Close) {
-    if (!backgroundTexture.loadFromFile("Images/background.png")) {
+    if (!backgroundTexture.loadFromFile("Images/assets/background.png")) {
         throw FileNotFoundException("Gameboard background");
     }
     backgroundSprite.setTexture(backgroundTexture);
@@ -30,21 +31,19 @@ GameBoard::GameBoard(const GameBoard& other) :
 GameBoard::~GameBoard() {}
 
 void GameBoard::initializeCards() {
-    std::vector<std::string> animalNames = {"giraffe", "chameleon", "deer", "owl", "monkey", "parrot"};
-
-    if (!backTexture.loadFromFile("Images/cardback.png")) {
+    if (!backTexture.loadFromFile("Images/assets/cardback.png")) {
         throw FileNotFoundException("cardback image");
     }
 
-    for (const auto& animalName : animalNames) {
+    for (const auto& [animal, question] : QuestionFactory::animalToQuestionMap) {
         sf::Texture frontTexture;
-        if (!frontTexture.loadFromFile("Images/" + animalName + ".png")) {
-            throw FileNotFoundException("card image");
+        if (!frontTexture.loadFromFile("Images/animals/" + animal + ".png")) {
+            throw FileNotFoundException("Image for animal: " + animal);
         }
         frontTextures.push_back(std::make_shared<sf::Texture>(frontTexture));
 
-        cards.emplace_back(animalName, *frontTextures.back(), backTexture);
-        cards.emplace_back(animalName, *frontTextures.back(), backTexture);
+        cards.emplace_back(animal, *frontTextures.back(), backTexture);
+        cards.emplace_back(animal, *frontTextures.back(), backTexture);
     }
     shuffleCards();
 }

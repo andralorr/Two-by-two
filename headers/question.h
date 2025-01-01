@@ -1,31 +1,56 @@
 #ifndef QUESTION_H
 #define QUESTION_H
 
+#pragma once
+
 #include <string>
 #include <vector>
 #include <unordered_map>
 #include <iostream>
+#include <memory>
 
 class Question {
-private:
-    std::string question;
-    std::vector<std::string> options;
-    int correctAnswer=-1;
-    static std::unordered_map<std::string, Question> animalToQuestionMap;
+protected:
+    std::string questionText;
 
 public:
-    Question() = default;
-    Question(const std::string& question, const std::vector<std::string>& options, int correctAnswer);
-    Question(const Question& other);
-    Question& operator=(const Question& other);
-    ~Question();
-    bool checkAnswer(int answerIndex) const;
-    const std::string& getQuestionText() const;
-    const std::vector<std::string>& getOptions() const;
+    explicit Question(const std::string& questionText);
+    virtual ~Question() = default;
 
-    static void initializeQuestions();
-    static Question* getQuestionForAnimal(const std::string& animal);
-    friend std::ostream& operator<<(std::ostream& os, const Question& q);
+    virtual bool checkAnswer(int answerIndex) const = 0;
+    virtual std::unique_ptr<Question> clone() const = 0;
+
+    const std::string& getQuestionText() const;
+    virtual const std::vector<std::string>& getOptions() const = 0;
 };
 
+class ThreeOptionsQuestion : public Question {
+    std::vector<std::string> options;
+    int correctAnswer;
+
+public:
+    ThreeOptionsQuestion(const std::string& questionText,
+                         const std::vector<std::string>& options,
+                         int correctAnswer);
+    bool checkAnswer(int answerIndex) const override;
+    std::unique_ptr<Question> clone() const override;
+    const std::vector<std::string>& getOptions() const override;
+};
+
+class TrueFalseQuestion : public Question {
+    std::vector<std::string> options = {"True", "False"};
+    bool correctAnswer;
+
+public:
+    TrueFalseQuestion(const std::string& questionText, bool correctAnswer);
+    bool checkAnswer(int answerIndex) const override;
+    std::unique_ptr<Question> clone() const override;
+    const std::vector<std::string>& getOptions() const override;
+};
+
+class QuestionFactory {
+public:
+    static void loadQuestionsFromFile(const std::string& filePath);
+    static std::unordered_map<std::string, std::unique_ptr<Question>> animalToQuestionMap;
+};
 #endif // QUESTION_H

@@ -1,0 +1,215 @@
+type:three
+owl
+What special feature allows owls to hunt so well at night?
+They glow in the dark|Silent flight|X-ray vision
+1
+
+type:three
+chameleon
+What is the most impressive trick chameleons can do?
+Change color to blend with their environment|Change color to match their food|Change color to communicate with aliens
+0
+
+type:three
+deer
+What do male deer grow and shed every year?
+Tail|A mustache|Antlers
+2
+
+type:three
+giraffe
+How many bones are in a giraffe's neck?
+7|14|21
+0
+
+type:three
+monkey
+What do monkeys use their tails for?
+As a pillow|To swat flies|For balance and grabbing things
+2
+
+type:three
+parrot
+What unique talent are parrots famous for?
+Doing backflips|Mimicking sounds and speech|Solving math problems
+1
+
+type:truefalse
+ant
+Some ants can explode themselves to protect their colony.
+True|False
+0
+
+type:truefalse
+bee
+Honeybees can recognize human faces.
+True|False
+1
+
+type:truefalse
+butterfly
+Butterflies taste with their feet.
+True|False
+1
+
+type:truefalse
+cat
+Cats will ignore you for days if you don't give them their favorite brand of tuna.
+True|False
+0
+
+type:truefalse
+cow
+Cows can sleep standing up, but they only dream when lying down.
+True|False
+1
+
+type:truefalse
+crab
+Crabs can tap dance to the rhythm of the ocean waves.
+True|False
+0
+
+type:three
+dog
+Which breed of dog is known for its distinct blue-black tongue?
+Beagle|Dalmatian|Chow Chow
+2
+
+type:three
+duck
+What do ducks use to navigate during migration?
+GPS|Stars|Road maps
+1
+
+type:three
+elephant
+What do elephants use their trunks for besides breathing?
+Picking up objects|Playing musical instruments|Painting masterpieces
+0
+
+type:three
+flamingo
+Why are flamingos pink?
+They are born that way|They bathe in pink lakes|Their diet of shrimp and algae
+2
+
+type:three
+fox
+What unusual food can foxes sometimes enjoy?
+Broccoli|Berries and fruit|Turkish delight
+1
+
+type:three
+frog
+How far can some frogs jump in a single leap?
+Twice their body length|10 times their body length|20 times their body length
+2
+
+type:three
+hamster
+Why do hamsters enjoy running on wheels so much?
+They think they're in a race|It helps them burn off energy and stay healthy|They imagine they're traveling to distant lands
+1
+
+type:three
+hedgehog
+What do hedgehogs do to protect themselves from predators?
+Curl into a spiky ball|Spray a foul-smelling liquid|Bark loudly
+0
+
+type:three
+hen
+What do hens do to communicate with each other?
+Sing opera|Use a variety of clucks, cackles, and calls|Write messages in the dirt
+1
+
+type:three
+horse
+What is the average speed of a racehorse during a race?
+25-30 miles per hour|15-20 miles per hour|35-40 miles per hour
+0
+
+type:three
+hummingbird
+How small is the smallest species of hummingbird?
+About the size of a sugar cube|About the size of a Christmas ball|About the size of a marshmallow
+0
+
+type:three
+kangaroo
+What do kangaroos use their tails for besides balance?
+To dig tunnels|As a fifth leg to help them walk|To paint pictures
+1
+
+type:three
+ladybug
+Why are ladybugs often bright red or orange with black spots?
+To attract mates|To blend in with flowers|To warn predators that they are toxic
+2
+
+type:three
+leopard
+What is a unique ability of leopards that helps them hunt?
+They can run at 60 miles per hour|They can jump up to 20 feet horizontally|They can fly short distances
+0
+
+type:three
+lion
+Why do lions rest for most of the day?
+They're lazy|They need to conserve energy|They're watching Netflix
+1
+
+type:truefalse
+pigeon
+Pigeons can perform magic tricks at birthday parties.
+True|False
+0
+
+type:truefalse
+rabbit
+Rabbits can see behind themselves without turning their heads.
+True|False
+1
+
+type:truefalse
+sheep
+Sheep and wolves are best friends and often have picnics together.
+True|False
+0
+
+type:truefalse
+snail
+Snails attend skincare conferences to share the latest trends in slime technology.
+True|False
+0
+
+type:truefalse
+snake
+Snakes shed their skin multiple times a year.
+True|False
+1
+
+type:truefalse
+spider
+Spiders have dance competitions to impress potential mates.
+True|False
+1
+
+type:truefalse
+squirrel
+Squirrels have secret stash maps to remember where they hide their nuts.
+True|False
+0
+
+type:truefalse
+turtle
+Turtles wear their shells like backpacks and can take them off whenever they want.
+True|False
+0
+
+type:truefalse
+zebra
+No two zebras have the same stripe pattern.
+True|False
+1

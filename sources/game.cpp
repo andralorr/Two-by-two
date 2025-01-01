@@ -6,15 +6,17 @@
 #include <memory>
 
 Game::Game(): timer(120) {
-    question_.initializeQuestions();
+    std::cout << "Initializing game...\n";
+    QuestionFactory::loadQuestionsFromFile("Init/questions.txt");
+    std::cout << "Questions loaded successfully.\n";
     isQuizActive = false;
     currentQuestion = nullptr;
     isGameOver = false;
+    std::cout << "Game initialized.\n";
 }
 
-
 void Game::run() {
-    addMessage(std::make_unique<StartMessage>(gameBoard.getWindow(), "Images/start.png"));
+    addMessage(std::make_unique<StartMessage>(gameBoard.getWindow(), "Images/assets/start.png"));
     displayMessages();
 
     if (isGameOver) return;
@@ -104,14 +106,24 @@ void Game::handleQuizOptionSelection(sf::Event::MouseButtonEvent) {
 
     if (clickedOption != -1) {
         if (currentQuestion) {
-            std::cout << *currentQuestion << std::endl;
-            if (currentQuestion->checkAnswer(clickedOption)) {
-                std::cout << "Correct answer!" << std::endl;
-                answeredQuestions.push_back(currentQuestion);
-                handleCorrectAnswer();
-            } else {
-                std::cout << "Wrong answer!" << std::endl;
-                resetGameAfterWrongAnswer();
+            if (auto singleChoice = dynamic_cast<ThreeOptionsQuestion*>(currentQuestion)) {
+                if (singleChoice->checkAnswer(clickedOption)) {
+                    std::cout << "Correct answer!" << std::endl;
+                    answeredQuestions.push_back(currentQuestion);
+                    handleCorrectAnswer();
+                } else {
+                    std::cout << "Wrong answer!" << std::endl;
+                    resetGameAfterWrongAnswer();
+                }
+            } else if (auto trueFalse = dynamic_cast<TrueFalseQuestion*>(currentQuestion)) {
+                if (trueFalse->checkAnswer(clickedOption)) {
+                    std::cout << "Correct answer!" << std::endl;
+                    answeredQuestions.push_back(currentQuestion);
+                    handleCorrectAnswer();
+                } else {
+                    std::cout << "Wrong answer!" << std::endl;
+                    resetGameAfterWrongAnswer();
+                }
             }
         } else {
             throw InvalidStateException("No question available for the selected card");
@@ -131,12 +143,9 @@ void Game::resetGameAfterWrongAnswer() {
     currentQuestion = nullptr;
     gameBoard.shuffleCards();
 
-    for (auto& card : gameBoard.getCards()) {
-        card.setMatched(false);
-        if (card.is_flipped()) {
-            card.flip();
-        }
-    }
+    QuestionFactory::loadQuestionsFromFile("Init/questions.txt");
+    gameBoard.getCards().clear();
+    gameBoard.initializeCards();
 
     firstFlippedCard = nullptr;
     secondFlippedCard = nullptr;
@@ -147,7 +156,7 @@ void Game::update() {
     timer.update();
 
     if (timer.isTimeUp()) {
-        addMessage(std::make_unique<FailureMessage>(gameBoard.getWindow(), "Images/final.png"));
+        addMessage(std::make_unique<FailureMessage>(gameBoard.getWindow(), "Images/assets/final.png"));
         displayMessages();
 
         if (isGameOver) return;
@@ -156,7 +165,7 @@ void Game::update() {
     }
 
     if (allQuestionsAnsweredCorrectly()) {
-        addMessage(std::make_unique<SuccessMessage>(gameBoard.getWindow(), "Images/success.png"));
+        addMessage(std::make_unique<SuccessMessage>(gameBoard.getWindow(), "Images/assets/success.png"));
         displayMessages();
     }
 
@@ -174,9 +183,9 @@ void Game::handleMatch() {
         std::cout << *firstFlippedCard << std::endl;
         std::cout << *secondFlippedCard << std::endl;
         if (firstFlippedCard->getAnimal() == secondFlippedCard->getAnimal()) {
-            currentQuestion = Question::getQuestionForAnimal(firstFlippedCard->getAnimal());
-
-            if (currentQuestion != nullptr) {
+            auto it = QuestionFactory::animalToQuestionMap.find(firstFlippedCard->getAnimal());
+            if (it != QuestionFactory::animalToQuestionMap.end()) {
+                currentQuestion = it->second.get();
                 firstFlippedCard->setMatched(true);
                 secondFlippedCard->setMatched(true);
                 openQuestionWindow();
@@ -213,7 +222,6 @@ void Game::render() {
         gameBoardQuiz.render();
     }
     gameBoard.getWindow().display();
-
 }
 
 std::ostream& operator<<(std::ostream& os, const Game& game) {
@@ -222,20 +230,11 @@ std::ostream& operator<<(std::ostream& os, const Game& game) {
 }
 
 bool Game::allQuestionsAnsweredCorrectly() {
-    std::vector<Question*> allQuestions;
-    for (auto& card : gameBoard.getCards()) {
-        Question* q = Question::getQuestionForAnimal(card.getAnimal());
-        if (q && std::find(allQuestions.begin(), allQuestions.end(), q) == allQuestions.end()) {
-            allQuestions.push_back(q);
-        }
-    }
-
-    for (auto& question : allQuestions) {
-        if (std::find(answeredQuestions.begin(), answeredQuestions.end(), question) == answeredQuestions.end()) {
+    for (const auto& [animal, question] : QuestionFactory::animalToQuestionMap) {
+        if (std::find(answeredQuestions.begin(), answeredQuestions.end(), question.get()) == answeredQuestions.end()) {
             return false;
         }
     }
-
     return true;
 }
 
@@ -249,16 +248,10 @@ void Game::restartGame() {
     currentQuestion = nullptr;
     answeredQuestions.clear();
 
-    gameBoard.shuffleCards();
+    QuestionFactory::loadQuestionsFromFile("Init/questions.txt");
 
-    for (auto& card : gameBoard.getCards()) {
-        card.setMatched(false);
-        if (card.is_flipped()) {
-            card.flip();
-        }
-    }
-
-    Question::initializeQuestions();
+    gameBoard.getCards().clear();
+    gameBoard.initializeCards();
 
     std::cout << "\n\nGame has been restarted!\n\n" << std::endl;
 }

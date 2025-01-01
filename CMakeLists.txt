@@ -111,6 +111,5 @@ endif()
 
 
 include(cmake/CopyHelper.cmake)
-# copy_files(FILES tastatura.txt DIRECTORY Init assets Fonts)
+copy_files(FILES tastatura.txt DIRECTORY Init Images font)
 # copy_files(FILES tastatura.txt config.json DIRECTORY images sounds)
-copy_files(DIRECTORY Images font)

@@ -30,7 +30,7 @@ void GameBoardQuiz::createWindow() {
         quizWindow.setPosition(position);
     }
 
-    if (!backgroundTexture.loadFromFile("Images/quizbackground.png")) {
+    if (!backgroundTexture.loadFromFile("Images/assets/quizbackground.png")) {
         throw FileNotFoundException("quizbackground");
     }
     backgroundSprite.setTexture(backgroundTexture);
