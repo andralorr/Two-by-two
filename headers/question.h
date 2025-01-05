@@ -43,8 +43,4 @@ public:
     static std::unordered_map<std::string, std::unique_ptr<IQuestion>> animalToQuestionMap;
 
     static void loadQuestionsFromFile(const std::string& threeQuestionsFile, const std::string& trueFalseQuestionsFile);
-    static std::unique_ptr<IQuestion> createQuestion(const std::string& type,
-                                                     const std::string& questionText,
-                                                     const std::vector<std::string>& options = {},
-                                                     int correctAnswer = -1);
 };

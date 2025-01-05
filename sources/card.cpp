@@ -33,10 +33,6 @@ bool Card::isMatched() const {
     return matched;
 }
 
-void Card::setMatched(bool is_matched) {
-   matched = is_matched;
-}
-
 void Card::flip() {
     isFlipped = !isFlipped;
 }

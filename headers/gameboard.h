@@ -27,7 +27,6 @@ public:
     void positionCards();
     void render();
     void shuffleCards();
-    std::vector<Card>& getCards();
     const std::vector<std::string>& getCurrentRoundAnimals() const { return currentRoundAnimals;}
     sf::RenderWindow& getWindow();
     Card* getCardAtPosition(sf::Vector2i position);

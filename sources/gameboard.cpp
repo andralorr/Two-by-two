@@ -108,9 +108,6 @@ Card* GameBoard::getCardAtPosition(sf::Vector2i position) {
     }
     return nullptr;
 }
-std::vector<Card>& GameBoard::getCards() {
-    return cards;
-}
 
 sf::RenderWindow& GameBoard::getWindow() {
     return cardsWindow;

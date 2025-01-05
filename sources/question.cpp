@@ -90,16 +90,3 @@ void QuestionFactory::loadQuestionsFromFile(const std::string& threeQuestionsFil
 
     std::cout << "Questions loaded successfully.\n";
 }
-
-std::unique_ptr<IQuestion> QuestionFactory::createQuestion(const std::string& type,
-                                                           const std::string& questionText,
-                                                           const std::vector<std::string>& options,
-                                                           int correctAnswer) {
-    if (type == "ThreeOptions") {
-        return std::make_unique<ThreeOptionsQuestion>(questionText, options, correctAnswer);
-    } else if (type == "TrueFalse") {
-        return std::make_unique<TrueFalseQuestion>(questionText, correctAnswer == 1);
-    } else {
-        throw std::invalid_argument("Unknown question type: " + type);
-    }
-}
