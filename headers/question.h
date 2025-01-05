@@ -13,7 +13,7 @@ protected:
 
 public:
     explicit Question(const std::string& questionText);
-    virtual ~Question() = default;
+    ~Question() override = default;
 
     const std::string& getQuestionText() const override;
 };

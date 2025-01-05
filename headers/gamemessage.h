@@ -15,9 +15,9 @@ protected:
 
 public:
     explicit GameMessage(sf::RenderWindow& win, const std::string& bgPath);
-    virtual ~GameMessage() = default;
+    ~GameMessage() override = default;
 
-    void display();
+    void display() override;
     virtual void customizeDisplay() = 0;
 
     static std::unique_ptr<IGameMessage> createMessage(sf::RenderWindow& win, const std::string& type, const std::string& bgPath);
