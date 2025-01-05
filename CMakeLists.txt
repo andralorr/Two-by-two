@@ -70,6 +70,8 @@ add_executable(${PROJECT_NAME}
         sources/timer.cpp
         headers/gameexception.h
         sources/gameexception.cpp
+        headers/iquestion.h
+        headers/igamemessage.h
 )
 
 include(cmake/CompilerFlags.cmake)

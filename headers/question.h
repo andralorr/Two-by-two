@@ -1,15 +1,13 @@
-#ifndef QUESTION_H
-#define QUESTION_H
-
 #pragma once
 
-#include <string>
-#include <vector>
-#include <unordered_map>
-#include <iostream>
 #include <memory>
 
-class Question {
+#include "IQuestion.h"
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+class Question : public IQuestion {
 protected:
     std::string questionText;
 
@@ -17,10 +15,7 @@ public:
     explicit Question(const std::string& questionText);
     virtual ~Question() = default;
 
-    virtual bool checkAnswer(int answerIndex) const = 0;
-
-    const std::string& getQuestionText() const;
-    virtual const std::vector<std::string>& getOptions() const = 0;
+    const std::string& getQuestionText() const override;
 };
 
 class ThreeOptionsQuestion : public Question {
@@ -28,15 +23,13 @@ class ThreeOptionsQuestion : public Question {
     int correctAnswer;
 
 public:
-    ThreeOptionsQuestion(const std::string& questionText,
-                         const std::vector<std::string>& options,
-                         int correctAnswer);
+    ThreeOptionsQuestion(const std::string& questionText, const std::vector<std::string>& options, int correctAnswer);
     bool checkAnswer(int answerIndex) const override;
     const std::vector<std::string>& getOptions() const override;
 };
 
 class TrueFalseQuestion : public Question {
-    std::vector<std::string> options = {"True", "False"};
+    std::vector<std::string> options;
     bool correctAnswer;
 
 public:
@@ -47,9 +40,11 @@ public:
 
 class QuestionFactory {
 public:
-    static void loadQuestionsFromFile(const std::string& filePath1, const std::string& filePath2);
-    static void loadThreeOptionsQuestions(const std::string& filePath);
-    static void loadTrueFalseQuestions(const std::string& filePath);
-    static std::unordered_map<std::string, std::unique_ptr<Question>> animalToQuestionMap;
+    static std::unordered_map<std::string, std::unique_ptr<IQuestion>> animalToQuestionMap;
+
+    static void loadQuestionsFromFile(const std::string& threeQuestionsFile, const std::string& trueFalseQuestionsFile);
+    static std::unique_ptr<IQuestion> createQuestion(const std::string& type,
+                                                     const std::string& questionText,
+                                                     const std::vector<std::string>& options = {},
+                                                     int correctAnswer = -1);
 };
-#endif // QUESTION_H

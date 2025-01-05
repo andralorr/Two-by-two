@@ -11,7 +11,7 @@ private:
     sf::Texture backgroundTexture;
     sf::Sprite backgroundSprite;
 
-    Question* currentQuestion = nullptr;
+    IQuestion* currentQuestion = nullptr;
 
     sf::Font font;
     sf::Text questionText;
@@ -23,7 +23,7 @@ public:
     ~GameBoardQuiz();
     GameBoardQuiz& operator=(const GameBoardQuiz& other);
     void createWindow();
-    void setCurrentQuestion(Question* question);
+    void setCurrentQuestion(IQuestion* question);
     void positionQuestions();
     void render();
     sf::RenderWindow& getWindowQuiz();

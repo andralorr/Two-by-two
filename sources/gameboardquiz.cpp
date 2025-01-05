@@ -49,7 +49,7 @@ void GameBoardQuiz::createWindow() {
     questionText.setStyle(sf::Text::Bold);
 }
 
-void GameBoardQuiz::setCurrentQuestion(Question* question) {
+void GameBoardQuiz::setCurrentQuestion(IQuestion* question) {
     currentQuestion = question;
     positionQuestions();
 }

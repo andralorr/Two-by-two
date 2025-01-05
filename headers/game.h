@@ -4,10 +4,8 @@
 #include "gameboardquiz.h"
 #include "timer.h"
 #include "gamemessage.h"
-#include "question.h"
 #include <vector>
 #include <memory>
-
 
 class Game {
 private:
@@ -17,18 +15,18 @@ private:
     bool isQuizActive;
     bool isGameOver;
 
-    Card* firstFlippedCard=nullptr;
-    Card* secondFlippedCard=nullptr;
-    Question* currentQuestion;
-    bool isCheckingMatch=false;
+    Card* firstFlippedCard = nullptr;
+    Card* secondFlippedCard = nullptr;
+    std::unique_ptr<IQuestion> currentQuestion;
+    bool isCheckingMatch = false;
 
-    std::vector<Question*> answeredQuestions;
-    std::vector<std::unique_ptr<GameMessage>> messages;
+    std::vector<std::unique_ptr<IGameMessage>> messages;
     sf::Clock matchTimer;
     const float matchDelay = 0.3f;
     std::vector<std::string> correctlyAnsweredAnimals;
 
     std::unique_ptr<Card> copiedFirstCard;
+
 public:
     Game();
     void run();
@@ -36,7 +34,7 @@ public:
     void render();
     void restartGame();
 
-    void addMessage(std::unique_ptr<GameMessage> message);
+    void addMessage(const std::string& type, const std::string& assetPath);
     void displayMessages();
     void processEvents();
     void processGameBoardEvents();

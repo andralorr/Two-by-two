@@ -1,46 +1,55 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <memory>
 #include <string>
+#include <memory>
 
-class GameMessage {
+// Interface for all game messages
+class IGameMessage {
+public:
+    virtual ~IGameMessage() = default;
+    virtual void display() = 0; // Displays the message
+};
+
+// Base class for game messages
+class GameMessage : public IGameMessage {
 protected:
     sf::RenderWindow& window;
-    sf::Font font;
-    sf::Text messageText;
     sf::Texture backgroundTexture;
     sf::Sprite backgroundSprite;
-
-    float titleOffsetY = 0.0f;
-    virtual void customizeDisplay();
+    sf::Font font;
+    sf::Text messageText;
 
 public:
     explicit GameMessage(sf::RenderWindow& win, const std::string& bgPath);
     virtual ~GameMessage() = default;
 
-    virtual void display();
+    void display() override;
+    virtual void customizeDisplay() = 0;
+
+    static std::unique_ptr<IGameMessage> createMessage(sf::RenderWindow& win, const std::string& type, const std::string& bgPath);
 };
 
 class StartMessage : public GameMessage {
     sf::Text buttonText;
+    float titleOffsetY;
 
 public:
-    StartMessage(sf::RenderWindow& win, const std::string& bgPath);
+    explicit StartMessage(sf::RenderWindow& win, const std::string& bgPath);
     void customizeDisplay() override;
 };
 
 class SuccessMessage : public GameMessage {
 public:
-    SuccessMessage(sf::RenderWindow& win, const std::string& bgPath);
+    explicit SuccessMessage(sf::RenderWindow& win, const std::string& bgPath);
     void customizeDisplay() override;
 };
 
 class FailureMessage : public GameMessage {
-    sf::Text buttonText;
     sf::RectangleShape buttonShape;
+    sf::Text buttonText;
 
 public:
-    FailureMessage(sf::RenderWindow& win, const std::string& bgPath);
+    explicit FailureMessage(sf::RenderWindow& win, const std::string& bgPath);
     void customizeDisplay() override;
 };

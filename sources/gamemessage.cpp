@@ -1,12 +1,14 @@
 #include "../headers/gamemessage.h"
-#include "../headers/gameexception.h"
+#include <stdexcept>
+
+// Base GameMessage implementation
 GameMessage::GameMessage(sf::RenderWindow& win, const std::string& bgPath)
     : window(win) {
     if (!font.loadFromFile("font/font2.ttf")) {
-        throw FileNotFoundException("Failed to load font: font/font2.ttf");
+        throw std::runtime_error("Failed to load font: font/font2.ttf");
     }
     if (!backgroundTexture.loadFromFile(bgPath)) {
-        throw FileNotFoundException("Failed to load background texture: " + bgPath);
+        throw std::runtime_error("Failed to load background texture: " + bgPath);
     }
     backgroundSprite.setTexture(backgroundTexture);
 }
@@ -26,15 +28,25 @@ void GameMessage::display() {
         window.clear();
         window.draw(backgroundSprite);
         window.draw(messageText);
-
         customizeDisplay();
-
         window.display();
     }
 }
 
-void GameMessage::customizeDisplay() {}
+// Factory method for creating messages
+std::unique_ptr<IGameMessage> GameMessage::createMessage(sf::RenderWindow& win, const std::string& type, const std::string& bgPath) {
+    if (type == "Start") {
+        return std::make_unique<StartMessage>(win, bgPath);
+    } else if (type == "Success") {
+        return std::make_unique<SuccessMessage>(win, bgPath);
+    } else if (type == "Failure") {
+        return std::make_unique<FailureMessage>(win, bgPath);
+    } else {
+        throw std::invalid_argument("Unknown message type: " + type);
+    }
+}
 
+// StartMessage implementation
 StartMessage::StartMessage(sf::RenderWindow& win, const std::string& bgPath)
     : GameMessage(win, bgPath) {
     messageText.setFont(font);
@@ -65,6 +77,7 @@ void StartMessage::customizeDisplay() {
     window.draw(buttonText);
 }
 
+// SuccessMessage implementation
 SuccessMessage::SuccessMessage(sf::RenderWindow& win, const std::string& bgPath)
     : GameMessage(win, bgPath) {
     messageText.setFont(font);
@@ -75,11 +88,13 @@ SuccessMessage::SuccessMessage(sf::RenderWindow& win, const std::string& bgPath)
     sf::FloatRect textBounds = messageText.getLocalBounds();
     messageText.setPosition(
         (static_cast<float>(window.getSize().x) - textBounds.width) / 2.f,
-        (static_cast<float>(window.getSize().y) - textBounds.height) / 2.f+90.0f
+        (static_cast<float>(window.getSize().y) - textBounds.height) / 2.f + 90.0f
     );
 }
+
 void SuccessMessage::customizeDisplay() {}
 
+// FailureMessage implementation
 FailureMessage::FailureMessage(sf::RenderWindow& win, const std::string& bgPath)
     : GameMessage(win, bgPath) {
     messageText.setFont(font);
@@ -119,4 +134,3 @@ void FailureMessage::customizeDisplay() {
     window.draw(buttonShape);
     window.draw(buttonText);
 }
-
