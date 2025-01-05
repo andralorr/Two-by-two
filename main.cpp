@@ -4,6 +4,7 @@
 #include <fstream>
 int main() {
     try {
+        std::cout << "Initializing game...\n";
         QuestionFactory::loadQuestionsFromFile("Init/questions.txt", "Init/truefalse.txt");
         std::cout << "Questions loaded successfully.\n";
         std::cout << "Game starting...\n";

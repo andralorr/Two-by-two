@@ -43,7 +43,7 @@ public:
 
     static void handleWindowClose(sf::RenderWindow& window);
     void handleQuizWindowClose();
-    void handleQuizOptionSelection(sf::Event::MouseButtonEvent mouseButton);
+    void handleQuizOptionSelection(sf::Event::MouseButtonEvent);
     void handleMatch();
     void openQuestionWindow();
     void handleCorrectAnswer();

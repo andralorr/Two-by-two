@@ -3,7 +3,6 @@
 #include <iostream>
 
 Game::Game() : timer(120) {
-    std::cout << "Initializing game...\n";
     isQuizActive = false;
     isGameOver = false;
     std::cout << "Game initialized.\n";
@@ -94,7 +93,7 @@ void Game::handleQuizWindowClose() {
     isQuizActive = false;
 }
 
-void Game::handleQuizOptionSelection(sf::Event::MouseButtonEvent mouseButton) {
+void Game::handleQuizOptionSelection(sf::Event::MouseButtonEvent) {
     sf::Vector2i mousePosition = sf::Mouse::getPosition(gameBoardQuiz.getWindowQuiz());
     int clickedOption = gameBoardQuiz.getOptionAtPosition(mousePosition);
 

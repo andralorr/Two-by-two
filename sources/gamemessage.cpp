@@ -1,7 +1,6 @@
 #include "../headers/gamemessage.h"
 #include <stdexcept>
 
-// Base GameMessage implementation
 GameMessage::GameMessage(sf::RenderWindow& win, const std::string& bgPath)
     : window(win) {
     if (!font.loadFromFile("font/font2.ttf")) {
@@ -33,7 +32,6 @@ void GameMessage::display() {
     }
 }
 
-// Factory method for creating messages
 std::unique_ptr<IGameMessage> GameMessage::createMessage(sf::RenderWindow& win, const std::string& type, const std::string& bgPath) {
     if (type == "Start") {
         return std::make_unique<StartMessage>(win, bgPath);
@@ -46,7 +44,6 @@ std::unique_ptr<IGameMessage> GameMessage::createMessage(sf::RenderWindow& win, 
     }
 }
 
-// StartMessage implementation
 StartMessage::StartMessage(sf::RenderWindow& win, const std::string& bgPath)
     : GameMessage(win, bgPath) {
     messageText.setFont(font);
@@ -77,7 +74,6 @@ void StartMessage::customizeDisplay() {
     window.draw(buttonText);
 }
 
-// SuccessMessage implementation
 SuccessMessage::SuccessMessage(sf::RenderWindow& win, const std::string& bgPath)
     : GameMessage(win, bgPath) {
     messageText.setFont(font);
@@ -94,7 +90,6 @@ SuccessMessage::SuccessMessage(sf::RenderWindow& win, const std::string& bgPath)
 
 void SuccessMessage::customizeDisplay() {}
 
-// FailureMessage implementation
 FailureMessage::FailureMessage(sf::RenderWindow& win, const std::string& bgPath)
     : GameMessage(win, bgPath) {
     messageText.setFont(font);

@@ -3,15 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <memory>
+#include "igamemessage.h"
 
-// Interface for all game messages
-class IGameMessage {
-public:
-    virtual ~IGameMessage() = default;
-    virtual void display() = 0; // Displays the message
-};
-
-// Base class for game messages
 class GameMessage : public IGameMessage {
 protected:
     sf::RenderWindow& window;
@@ -24,7 +17,7 @@ public:
     explicit GameMessage(sf::RenderWindow& win, const std::string& bgPath);
     virtual ~GameMessage() = default;
 
-    void display() override;
+    void display();
     virtual void customizeDisplay() = 0;
 
     static std::unique_ptr<IGameMessage> createMessage(sf::RenderWindow& win, const std::string& type, const std::string& bgPath);

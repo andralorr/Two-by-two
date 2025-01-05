@@ -2,7 +2,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "../headers/Question.h"
+#include "../headers/question.h"
 
 Question::Question(const std::string& questionText) : questionText(questionText) {}
 
