@@ -14,6 +14,7 @@ private:
 
     sf::Texture backTexture;
     std::vector<std::shared_ptr<sf::Texture>> frontTextures;
+
     std::vector<Card> cards;
     std::vector<std::string> currentRoundAnimals;
 
