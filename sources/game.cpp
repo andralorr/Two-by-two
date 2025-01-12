@@ -3,7 +3,7 @@
 #include "../headers/gameexception.h"
 #include <iostream>
 
-Game::Game() : timer(23), isGameFinished(false){
+Game::Game() : timer(120), isGameFinished(false){
     isQuizActive = false;
     isGameOver = false;
 }
