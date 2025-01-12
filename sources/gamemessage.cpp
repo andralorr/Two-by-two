@@ -37,7 +37,7 @@ void GameMessage::display() {
     }
 }
 
-bool GameMessage::isButtonClicked(const sf::Vector2f& mousePosition) const {
+bool GameMessage::isButtonClicked(const sf::Vector2f&) const {
     return false;
 }
 
