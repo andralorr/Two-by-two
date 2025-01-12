@@ -19,8 +19,13 @@ void GameMessage::display() {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
+
             if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-                return;
+                sf::Vector2f mousePosition(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
+
+                if (isButtonClicked(mousePosition)) {
+                    return;
+                }
             }
         }
 
@@ -32,16 +37,8 @@ void GameMessage::display() {
     }
 }
 
-std::unique_ptr<IGameMessage> GameMessage::createMessage(sf::RenderWindow& win, const std::string& type, const std::string& bgPath) {
-    if (type == "Start") {
-        return std::make_unique<StartMessage>(win, bgPath);
-    } else if (type == "Success") {
-        return std::make_unique<SuccessMessage>(win, bgPath);
-    } else if (type == "Failure") {
-        return std::make_unique<FailureMessage>(win, bgPath);
-    } else {
-        throw std::invalid_argument("Unknown message type: " + type);
-    }
+bool GameMessage::isButtonClicked(const sf::Vector2f& mousePosition) const {
+    return false;
 }
 
 StartMessage::StartMessage(sf::RenderWindow& win, const std::string& bgPath)
@@ -72,6 +69,11 @@ StartMessage::StartMessage(sf::RenderWindow& win, const std::string& bgPath)
 
 void StartMessage::customizeDisplay() {
     window.draw(buttonText);
+}
+
+bool StartMessage::isButtonClicked(const sf::Vector2f& mousePosition) const {
+    sf::FloatRect bounds = buttonText.getGlobalBounds();
+    return bounds.contains(mousePosition);
 }
 
 SuccessMessage::SuccessMessage(sf::RenderWindow& win, const std::string& bgPath)
@@ -128,4 +130,22 @@ FailureMessage::FailureMessage(sf::RenderWindow& win, const std::string& bgPath)
 void FailureMessage::customizeDisplay() {
     window.draw(buttonShape);
     window.draw(buttonText);
+}
+
+bool FailureMessage::isButtonClicked(const sf::Vector2f& mousePosition) const {
+    sf::FloatRect bounds = buttonShape.getGlobalBounds();
+    return bounds.contains(mousePosition);
+}
+
+std::unique_ptr<IGameMessage> MessageFactory::createMessage(sf::RenderWindow& win, MessageType type, const std::string& bgPath) {
+    switch (type) {
+        case MessageType::Start:
+            return std::make_unique<StartMessage>(win, bgPath);
+        case MessageType::Success:
+            return std::make_unique<SuccessMessage>(win, bgPath);
+        case MessageType::Failure:
+            return std::make_unique<FailureMessage>(win, bgPath);
+        default:
+            throw std::invalid_argument("unknown MessageType");
+    }
 }

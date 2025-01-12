@@ -19,8 +19,7 @@ public:
 
     void display() override;
     virtual void customizeDisplay() = 0;
-
-    static std::unique_ptr<IGameMessage> createMessage(sf::RenderWindow& win, const std::string& type, const std::string& bgPath);
+    virtual bool isButtonClicked(const sf::Vector2f& mousePosition) const;
 };
 
 class StartMessage : public GameMessage {
@@ -30,6 +29,7 @@ class StartMessage : public GameMessage {
 public:
     explicit StartMessage(sf::RenderWindow& win, const std::string& bgPath);
     void customizeDisplay() override;
+    bool isButtonClicked(const sf::Vector2f& mousePosition) const override;
 };
 
 class SuccessMessage : public GameMessage {
@@ -45,4 +45,16 @@ class FailureMessage : public GameMessage {
 public:
     explicit FailureMessage(sf::RenderWindow& win, const std::string& bgPath);
     void customizeDisplay() override;
+    bool isButtonClicked(const sf::Vector2f& mousePosition) const override;
+};
+
+enum class MessageType {
+    Start,
+    Success,
+    Failure
+};
+
+class MessageFactory {
+public:
+    static std::unique_ptr<IGameMessage> createMessage(sf::RenderWindow& win, MessageType type, const std::string& bgPath);
 };

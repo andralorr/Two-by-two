@@ -11,3 +11,6 @@ FileNotFoundException::FileNotFoundException(const std::string& filename)
 
 InvalidStateException::InvalidStateException(const std::string& msg)
     : GameException("Invalid state: " + msg) {}
+
+GameLogicException::GameLogicException(const std::string& msg)
+    : GameException("Game logic error: " + msg) {}

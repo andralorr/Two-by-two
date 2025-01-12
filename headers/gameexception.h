@@ -22,4 +22,9 @@ public:
     explicit InvalidStateException(const std::string& msg);
 };
 
+class GameLogicException : public GameException {
+public:
+    explicit GameLogicException(const std::string& msg);
+};
+
 #endif // GAMEEXCEPTION_H

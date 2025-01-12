@@ -5,13 +5,14 @@
 #include <iostream>
 #include <random>
 
-GameBoard::GameBoard() : cardsWindow(sf::VideoMode::getFullscreenModes()[0], "Memory Game: Two by two", sf::Style::Close) {
+GameBoard::GameBoard() : cardsWindow(sf::VideoMode::getDesktopMode(), "Memory Game: Two by two", sf::Style::Close) {
     if (!backgroundTexture.loadFromFile("Images/assets/background.png")) {
         throw FileNotFoundException("Gameboard background");
     }
     backgroundSprite.setTexture(backgroundTexture);
-    float scaleX = static_cast<float>(cardsWindow.getSize().x) / backgroundTexture.getSize().x;
-    float scaleY = static_cast<float>(cardsWindow.getSize().y) / backgroundTexture.getSize().y;
+    float scaleX = static_cast<float>(cardsWindow.getSize().x) / static_cast<float>(backgroundTexture.getSize().x);
+    float scaleY = static_cast<float>(cardsWindow.getSize().y) / static_cast<float>(backgroundTexture.getSize().y);
+
     backgroundSprite.setScale(scaleX, scaleY);
 
     cardsWindow.setVerticalSyncEnabled(true);
@@ -30,7 +31,7 @@ GameBoard::GameBoard(const GameBoard& other) :
 {
 }
 
-GameBoard::~GameBoard() {}
+GameBoard::~GameBoard() = default;
 
 void GameBoard::initializeCards() {
     cards.clear();
@@ -69,15 +70,18 @@ void GameBoard::positionCards() {
     const int cardHeight = 200;
     const int spacing = 30;
 
-    int startX = (cardsWindow.getSize().x - (cols * cardWidth + (cols - 1) * spacing)) / 2;
-    int startY = (cardsWindow.getSize().y - (rows * cardHeight + (rows - 1) * spacing)) / 2;
+    const int totalWidth = cols * cardWidth + (cols - 1) * spacing;
+    const int totalHeight = rows * cardHeight + (rows - 1) * spacing;
+
+    const int startX = (static_cast<int>(cardsWindow.getSize().x) - totalWidth) / 2;
+    const int startY = (static_cast<int>(cardsWindow.getSize().y) - totalHeight) / 2;
 
     int index = 0;
     for (int row = 0; row < rows; ++row) {
         for (int col = 0; col < cols; ++col) {
-            int x = startX + col * (cardWidth + spacing);
-            int y = startY + row * (cardHeight + spacing);
-            cards[index].setPosition(x, y);
+            const int x = startX + col * (cardWidth + spacing);
+            const int y = startY + row * (cardHeight + spacing);
+            cards[index].setPosition(static_cast<float>(x), static_cast<float>(y));
             ++index;
         }
     }
@@ -100,14 +104,16 @@ void GameBoard::shuffleCards() {
     positionCards();
 }
 
-Card* GameBoard::getCardAtPosition(sf::Vector2i position) {
+Card* GameBoard::getCardAtPosition(const sf::Vector2i& position) {
     for (auto& card : cards) {
-        if (card.getGlobalBounds().contains(static_cast<float>(position.x), static_cast<float>(position.y))) {
+        sf::FloatRect bounds = card.getGlobalBounds();
+        if (bounds.contains(static_cast<float>(position.x), static_cast<float>(position.y))) {
             return &card;
         }
     }
     return nullptr;
 }
+
 
 sf::RenderWindow& GameBoard::getWindow() {
     return cardsWindow;

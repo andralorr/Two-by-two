@@ -1,15 +1,15 @@
 #include "../headers/game.h"
 #include "../headers/gamemessage.h"
+#include "../headers/gameexception.h"
 #include <iostream>
 
-Game::Game() : timer(120) {
+Game::Game() : timer(120), isGameFinished(false){
     isQuizActive = false;
     isGameOver = false;
-    std::cout << "Game initialized.\n";
 }
 
 void Game::run() {
-    addMessage("Start", "Images/assets/start.png");
+    addMessage(MessageType::Start, "Images/assets/start.png");
     displayMessages();
 
     if (isGameOver) return;
@@ -21,8 +21,8 @@ void Game::run() {
     }
 }
 
-void Game::addMessage(const std::string& type, const std::string& assetPath) {
-    messages.push_back(GameMessage::createMessage(gameBoard.getWindow(), type, assetPath));
+void Game::addMessage(MessageType type, const std::string& assetPath) {
+    messages.push_back(MessageFactory::createMessage(gameBoard.getWindow(), type, assetPath));
 }
 
 void Game::displayMessages() {
@@ -33,6 +33,9 @@ void Game::displayMessages() {
 }
 
 void Game::processEvents() {
+    if (isGameFinished) {
+        return;
+    }
     if (!isQuizActive)
         processGameBoardEvents();
     else
@@ -61,16 +64,26 @@ void Game::handleCardSelection(sf::Event::MouseButtonEvent mouseButton) {
         sf::Vector2i mousePosition = sf::Mouse::getPosition(gameBoard.getWindow());
         Card* clickedCard = gameBoard.getCardAtPosition(mousePosition);
 
-        if (clickedCard && !clickedCard->isMatched() && clickedCard != firstFlippedCard) {
-            clickedCard->flip();
+        if (!clickedCard) {
+            return;
+        }
 
-            if (!firstFlippedCard) {
-                firstFlippedCard = clickedCard;
-            } else {
-                secondFlippedCard = clickedCard;
-                isCheckingMatch = true;
-                matchTimer.restart();
-            }
+        if (clickedCard->isMatched()) {
+            return;
+        }
+
+        if (clickedCard == firstFlippedCard) {
+            return;
+        }
+
+        clickedCard->flip();
+
+        if (!firstFlippedCard) {
+            firstFlippedCard = clickedCard;
+        } else {
+            secondFlippedCard = clickedCard;
+            isCheckingMatch = true;
+            matchTimer.restart();
         }
     }
 }
@@ -94,10 +107,14 @@ void Game::handleQuizWindowClose() {
 }
 
 void Game::handleQuizOptionSelection(sf::Event::MouseButtonEvent) {
+    if (!currentQuestion) {
+        throw GameLogicException("No active question available for the quiz.");
+    }
+
     sf::Vector2i mousePosition = sf::Mouse::getPosition(gameBoardQuiz.getWindowQuiz());
     int clickedOption = gameBoardQuiz.getOptionAtPosition(mousePosition);
 
-    if (clickedOption != -1 && currentQuestion) {
+    if (clickedOption != -1) {
         if (currentQuestion->checkAnswer(clickedOption)) {
             std::cout << "Correct answer!" << std::endl;
             handleCorrectAnswer();
@@ -127,11 +144,16 @@ void Game::handleCorrectAnswer() {
 void Game::resetGameAfterWrongAnswer() {
     gameBoardQuiz.getWindowQuiz().close();
     isQuizActive = false;
+
     gameBoard.shuffleCards();
+    gameBoard.positionCards();
     gameBoard.initializeCards();
+
     firstFlippedCard = nullptr;
     secondFlippedCard = nullptr;
     correctlyAnsweredAnimals.clear();
+
+    QuestionFactory::loadQuestionsFromFile("Init/questions.txt", "Init/truefalse.txt");
 }
 
 void Game::update() {
@@ -143,25 +165,29 @@ void Game::update() {
             isQuizActive = false;
         }
 
-        addMessage("Failure", "Images/assets/final.png");
+        addMessage(MessageType::Failure, "Images/assets/final.png");
         displayMessages();
         restartGame();
         return;
     }
 
     if (allQuestionsAnsweredCorrectly()) {
-        addMessage("Success", "Images/assets/success.png");
+        addMessage(MessageType::Success, "Images/assets/success.png");
         displayMessages();
         isGameOver = true;
+        isGameFinished = true;
     }
 
     if (isCheckingMatch && !isQuizActive) {
+        if (!firstFlippedCard || !secondFlippedCard) {
+            throw GameLogicException("Match checking state is active, but flipped cards are not set.");
+        }
+
         if (matchTimer.getElapsedTime().asSeconds() >= matchDelay) {
             handleMatch();
         }
     }
 }
-
 
 void Game::handleMatch() {
     if (firstFlippedCard && secondFlippedCard) {
@@ -172,6 +198,8 @@ void Game::handleMatch() {
             if (it != QuestionFactory::animalToQuestionMap.end()) {
                 currentQuestion = std::move(it->second);
                 openQuestionWindow();
+            } else {
+                throw GameLogicException("No question available for the matched animal: " + firstFlippedCard->getAnimal());
             }
         } else {
             firstFlippedCard->flip();
@@ -185,14 +213,19 @@ void Game::handleMatch() {
 }
 
 void Game::openQuestionWindow() {
-    if (currentQuestion) {
-        gameBoardQuiz.createWindow();
-        gameBoardQuiz.setCurrentQuestion(currentQuestion.get());
-        isQuizActive = true;
+    if (!currentQuestion) {
+        throw GameLogicException("Cannot open question window: no current question set.");
     }
+
+    gameBoardQuiz.createWindow();
+    gameBoardQuiz.setCurrentQuestion(currentQuestion.get());
+    isQuizActive = true;
 }
 
 void Game::render() {
+    if (isGameFinished) {
+        return;
+    }
     gameBoard.getWindow().clear();
     gameBoard.render();
     timer.render(gameBoard.getWindow());

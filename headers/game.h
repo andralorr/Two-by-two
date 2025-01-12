@@ -14,6 +14,7 @@ private:
     Timer timer;
     bool isQuizActive;
     bool isGameOver;
+    bool isGameFinished;
 
     Card* firstFlippedCard = nullptr;
     Card* secondFlippedCard = nullptr;
@@ -34,7 +35,7 @@ public:
     void render();
     void restartGame();
 
-    void addMessage(const std::string& type, const std::string& assetPath);
+    void addMessage(MessageType type, const std::string& assetPath);
     void displayMessages();
     void processEvents();
     void processGameBoardEvents();

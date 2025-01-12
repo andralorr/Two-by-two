@@ -29,7 +29,7 @@ public:
     void shuffleCards();
     const std::vector<std::string>& getCurrentRoundAnimals() const { return currentRoundAnimals;}
     sf::RenderWindow& getWindow();
-    Card* getCardAtPosition(sf::Vector2i position);
+    Card* getCardAtPosition(const sf::Vector2i& position);
     friend std::ostream& operator<<(std::ostream& os, const GameBoard& gameBoard);
 };
 #endif //GAMEBOARD_H
