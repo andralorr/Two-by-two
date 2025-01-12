@@ -1,5 +1,6 @@
 #include "headers/game.h"
 #include "headers/gameexception.h"
+#include <SFML/Audio.hpp>
 #include <iostream>
 
 int main() {
@@ -10,6 +11,15 @@ int main() {
 
         std::cout << "Game starting...\n";
         Game game;
+
+        sf::Music backgroundMusic;
+        if (!backgroundMusic.openFromFile("music/music.wav")) {
+            throw std::runtime_error("Failed to load background music!");
+        }
+        backgroundMusic.setLoop(true);
+        backgroundMusic.setVolume(10);
+        backgroundMusic.play();
+
         std::cout << "Game initialized successfully.\n";
         game.run();
     } catch (const FileNotFoundException& e) {

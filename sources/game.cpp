@@ -3,7 +3,7 @@
 #include "../headers/gameexception.h"
 #include <iostream>
 
-Game::Game() : timer(120), isGameFinished(false){
+Game::Game() : timer(23), isGameFinished(false){
     isQuizActive = false;
     isGameOver = false;
 }
@@ -26,6 +26,9 @@ void Game::addMessage(MessageType type, const std::string& assetPath) {
 }
 
 void Game::displayMessages() {
+    if (timer.isClockSoundPlaying()) {
+        timer.stopClockSound();
+    }
     for (auto& message : messages) {
         message->display();
     }
