@@ -53,24 +53,23 @@ StartMessage::StartMessage(sf::RenderWindow& win, const std::string& bgPath)
     messageText.setString("Memory Game: Two by Two");
     messageText.setCharacterSize(120);
     messageText.setFillColor(sf::Color::White);
-    titleOffsetY = -30.0f;
 
     sf::FloatRect textBounds = messageText.getLocalBounds();
-    messageText.setPosition(
-        (static_cast<float>(window.getSize().x) - textBounds.width) / 2.f,
-        (static_cast<float>(window.getSize().y) - textBounds.height) / 3.f + titleOffsetY
-    );
+
+    float titleX = (static_cast<float>(window.getSize().x) - textBounds.width) / 2.f;
+    float titleY = static_cast<float>(window.getSize().y) * 0.29f;
+    messageText.setPosition(titleX, titleY);
 
     buttonText.setFont(font);
     buttonText.setString("START GAME");
-    buttonText.setCharacterSize(68);
+    buttonText.setCharacterSize(80);
     buttonText.setFillColor(sf::Color::White);
 
     textBounds = buttonText.getLocalBounds();
-    buttonText.setPosition(
-        (static_cast<float>(window.getSize().x) - textBounds.width) / 2.f,
-        (static_cast<float>(window.getSize().y) / 2.f + 240.f)
-    );
+
+    float buttonX = (static_cast<float>(window.getSize().x) - textBounds.width) / 2.f;
+    float buttonY = static_cast<float>(window.getSize().y) * 0.72f;
+    buttonText.setPosition(buttonX, buttonY);
 }
 
 void StartMessage::customizeDisplay() {
@@ -86,13 +85,13 @@ SuccessMessage::SuccessMessage(sf::RenderWindow& win, const std::string& bgPath)
     : GameMessage(win, bgPath) {
     messageText.setFont(font);
     messageText.setString("Noah couldn't have done it without you!");
-    messageText.setCharacterSize(60);
+    messageText.setCharacterSize(80);
     messageText.setFillColor(sf::Color(0, 255, 255));
 
     sf::FloatRect textBounds = messageText.getLocalBounds();
     messageText.setPosition(
         (static_cast<float>(window.getSize().x) - textBounds.width) / 2.f,
-        (static_cast<float>(window.getSize().y) - textBounds.height) / 2.f + 90.0f
+        (static_cast<float>(window.getSize().y) - textBounds.height) * 0.65f
     );
 }
 
@@ -107,18 +106,19 @@ FailureMessage::FailureMessage(sf::RenderWindow& win, const std::string& bgPath)
 
     sf::FloatRect textBounds = messageText.getLocalBounds();
     messageText.setPosition(
-        (static_cast<float>(window.getSize().x) - textBounds.width) / 2.f,
-        (static_cast<float>(window.getSize().y) - textBounds.height) / 3.f + 160.f
+        (win.getSize().x - textBounds.width) / 2.f,
+        (win.getSize().y * 0.45f)
     );
 
-    buttonShape.setSize({300.f, 80.f});
+
+    buttonShape.setSize({300.0f, 80.0f});
     buttonShape.setFillColor(sf::Color(24, 43, 54));
     buttonShape.setOutlineColor(sf::Color::White);
     buttonShape.setOutlineThickness(2.f);
 
     buttonShape.setPosition(
-        (static_cast<float>(window.getSize().x) - buttonShape.getSize().x) / 2.f,
-        (static_cast<float>(window.getSize().y) / 2.f + 200.f)
+        (win.getSize().x - buttonShape.getSize().x) / 2.f,
+        win.getSize().y * 0.7f
     );
 
     buttonText.setFont(font);
@@ -129,7 +129,7 @@ FailureMessage::FailureMessage(sf::RenderWindow& win, const std::string& bgPath)
     textBounds = buttonText.getLocalBounds();
     buttonText.setPosition(
         buttonShape.getPosition().x + (buttonShape.getSize().x - textBounds.width) / 2.f,
-        buttonShape.getPosition().y + (buttonShape.getSize().y - textBounds.height) / 2.f - 16.f
+        buttonShape.getPosition().y + (buttonShape.getSize().y - textBounds.height) * 0.2f
     );
 }
 

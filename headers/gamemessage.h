@@ -12,7 +12,6 @@ protected:
     sf::Sprite backgroundSprite;
     sf::Font font;
     sf::Text messageText;
-
 public:
     explicit GameMessage(sf::RenderWindow& win, const std::string& bgPath);
     ~GameMessage() override = default;
@@ -24,7 +23,6 @@ public:
 
 class StartMessage : public GameMessage {
     sf::Text buttonText;
-    float titleOffsetY;
 
 public:
     explicit StartMessage(sf::RenderWindow& win, const std::string& bgPath);
