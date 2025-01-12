@@ -10,6 +10,12 @@ GameMessage::GameMessage(sf::RenderWindow& win, const std::string& bgPath)
         throw std::runtime_error("Failed to load background texture: " + bgPath);
     }
     backgroundSprite.setTexture(backgroundTexture);
+
+    float scaleX = static_cast<float>(window.getSize().x) / static_cast<float>(backgroundTexture.getSize().x);
+    float scaleY = static_cast<float>(window.getSize().y) / static_cast<float>(backgroundTexture.getSize().y);
+
+    backgroundSprite.setScale(scaleX, scaleY);
+    window.setVerticalSyncEnabled(true);
 }
 
 void GameMessage::display() {

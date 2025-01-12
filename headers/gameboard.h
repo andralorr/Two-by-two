@@ -31,5 +31,6 @@ public:
     sf::RenderWindow& getWindow();
     Card* getCardAtPosition(const sf::Vector2i& position);
     friend std::ostream& operator<<(std::ostream& os, const GameBoard& gameBoard);
+
 };
 #endif //GAMEBOARD_H
