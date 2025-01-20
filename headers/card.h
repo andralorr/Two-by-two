@@ -11,6 +11,7 @@ private:
     sf::Sprite backSprite;
     bool matched;
     bool isFlipped;
+    bool blocked = false;
 
 public:
     Card(const std::string &animal, sf::Texture& frontTexture, sf::Texture& backTexture);
@@ -23,6 +24,9 @@ public:
     bool isMatched() const;
     void flip();
     void setPosition(float x, float y);
+
+    void setBlocked(bool state) { blocked = state; }
+    bool isBlocked() const { return blocked; }
 
     sf::FloatRect getGlobalBounds() const;
 

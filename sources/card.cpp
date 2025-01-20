@@ -34,6 +34,9 @@ bool Card::isMatched() const {
 }
 
 void Card::flip() {
+    if (isBlocked()) {
+        return;
+    }
     isFlipped = !isFlipped;
 }
 

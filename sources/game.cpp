@@ -64,10 +64,18 @@ void Game::handleWindowClose(sf::RenderWindow& window) {
 
 void Game::handleCardSelection(sf::Event::MouseButtonEvent mouseButton) {
     if (mouseButton.button == sf::Mouse::Left) {
+        if (isCheckingMatch || isQuizActive) {
+            return;
+        }
+
         sf::Vector2i mousePosition = sf::Mouse::getPosition(gameBoard.getWindow());
         Card* clickedCard = gameBoard.getCardAtPosition(mousePosition);
 
         if (!clickedCard) {
+            return;
+        }
+
+        if (clickedCard->isBlocked()) {
             return;
         }
 
@@ -204,6 +212,8 @@ void Game::handleMatch() {
             } else {
                 throw GameLogicException("No question available for the matched animal: " + firstFlippedCard->getAnimal());
             }
+            firstFlippedCard->setBlocked(true);
+            secondFlippedCard->setBlocked(true);
         } else {
             firstFlippedCard->flip();
             secondFlippedCard->flip();
