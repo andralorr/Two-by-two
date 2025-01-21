@@ -14,7 +14,7 @@ int main() {
 
         sf::Music backgroundMusic;
         if (!backgroundMusic.openFromFile("music/music.wav")) {
-            throw std::runtime_error("Failed to load background music!");
+            throw FileNotFoundException("Failed to load background music!");
         }
         backgroundMusic.setLoop(true);
         backgroundMusic.setVolume(10);
