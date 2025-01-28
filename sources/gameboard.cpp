@@ -1,7 +1,6 @@
 #include "../headers/gameboard.h"
 #include "../headers/gameexception.h"
 #include "../headers/question.h"
-#include "../headers/game.h"
 #include <iostream>
 #include <random>
 
@@ -22,16 +21,12 @@ GameBoard::GameBoard() : cardsWindow(sf::VideoMode::getDesktopMode(), "Memory Ga
     shuffleCards();
 }
 
-GameBoard::GameBoard(const GameBoard& other) :
-    backgroundTexture(other.backgroundTexture),
-    backgroundSprite(other.backgroundSprite),
-    backTexture(other.backTexture),
-    frontTextures(other.frontTextures),
-    cards(other.cards)
-{
+GameBoard::~GameBoard() {
+    if (cardsWindow.isOpen()) {
+        cardsWindow.close();
+    }
+    std::cout << "GameBoard destructor called." << std::endl;
 }
-
-GameBoard::~GameBoard() = default;
 
 void GameBoard::initializeCards() {
     cards.clear();
@@ -114,27 +109,15 @@ Card* GameBoard::getCardAtPosition(const sf::Vector2i& position) {
     return nullptr;
 }
 
-
 sf::RenderWindow& GameBoard::getWindow() {
     return cardsWindow;
 }
 
-GameBoard& GameBoard::operator=(const GameBoard& other) {
-    if (this != &other) {
-        backgroundTexture = other.backgroundTexture;
-        backgroundSprite = other.backgroundSprite;
-        backTexture = other.backTexture;
-        frontTextures = other.frontTextures;
-        cards = other.cards;
-    }
-    return *this;
-}
-
 std::ostream& operator<<(std::ostream& os, const GameBoard& gameBoard) {
     os << "{ "
-    << "Window Size: "<<gameBoard.cardsWindow.getSize().x << "x" << gameBoard.cardsWindow.getSize().y
-    << ", Number of Cards: " << gameBoard.cards.size()
-    << ", Cards: [ ";
+       << "Window Size: " << gameBoard.cardsWindow.getSize().x << "x" << gameBoard.cardsWindow.getSize().y
+       << ", Number of Cards: " << gameBoard.cards.size()
+       << ", Cards: [ ";
     for (const auto& card : gameBoard.cards) {
         os << card.getAnimal() << " ";
     }

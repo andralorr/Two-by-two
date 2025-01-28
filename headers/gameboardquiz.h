@@ -4,8 +4,11 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include "../headers/question.h"
+#include "../headers/singleton.h"
 
-class GameBoardQuiz {
+class GameBoardQuiz : public Singleton<GameBoardQuiz> {
+    friend class Singleton<GameBoardQuiz>;
+
 private:
     sf::RenderWindow quizWindow;
     sf::Texture backgroundTexture;
@@ -17,16 +20,18 @@ private:
     sf::Text questionText;
     std::vector<sf::Text> optionTexts;
     std::vector<sf::RectangleShape> optionBoxes;
-public:
+
     GameBoardQuiz();
-    GameBoardQuiz(const GameBoardQuiz& other);
     ~GameBoardQuiz();
-    GameBoardQuiz& operator=(const GameBoardQuiz& other);
-    void createWindow();
-    void setCurrentQuestion(IQuestion* question);
+
     void positionQuestions();
-    void render();
+
+public:
     sf::RenderWindow& getWindowQuiz();
+    void createWindow();
+    void render();
     int getOptionAtPosition(const sf::Vector2i& position) const;
+    void setCurrentQuestion(IQuestion* question);
 };
-#endif //GAMEBOARDQUIZ_H
+
+#endif // GAMEBOARDQUIZ_H

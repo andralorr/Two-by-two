@@ -72,6 +72,7 @@ add_executable(${PROJECT_NAME}
         sources/gameexception.cpp
         headers/iquestion.h
         headers/igamemessage.h
+        headers/singleton.h
 )
 
 include(cmake/CompilerFlags.cmake)

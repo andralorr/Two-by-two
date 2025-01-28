@@ -13,24 +13,25 @@ private:
     bool isFlipped;
     bool blocked = false;
 
+    bool isMatched() const;
+    void flip();
+
+    void setBlocked(bool state) { blocked = state; }
+    bool isBlocked() const { return blocked; }
+
+    friend std::ostream& operator<<(std::ostream& os, const Card& card);
+
 public:
     Card(const std::string &animal, sf::Texture& frontTexture, sf::Texture& backTexture);
     Card(const Card& other);
     Card& operator=(const Card& other);
     virtual ~Card() = default;
 
-    const std::string& getAnimal() const;
     void draw(sf::RenderWindow& window) const;
-    bool isMatched() const;
-    void flip();
     void setPosition(float x, float y);
-
-    void setBlocked(bool state) { blocked = state; }
-    bool isBlocked() const { return blocked; }
-
     sf::FloatRect getGlobalBounds() const;
+    const std::string& getAnimal() const;
 
-    friend std::ostream& operator<<(std::ostream& os, const Card& card);
 protected:
     virtual std::unique_ptr<Card> clone() const {
         return std::make_unique<Card>(*this);

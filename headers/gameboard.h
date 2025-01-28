@@ -5,8 +5,11 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include "../headers/card.h"
+#include "../headers/singleton.h"
 
-class GameBoard {
+class GameBoard : public Singleton<GameBoard> {
+    friend class Singleton<GameBoard>;
+
 private:
     sf::RenderWindow cardsWindow;
     sf::Texture backgroundTexture;
@@ -18,19 +21,18 @@ private:
     std::vector<Card> cards;
     std::vector<std::string> currentRoundAnimals;
 
-public:
     GameBoard();
-    GameBoard(const GameBoard& other);
-    GameBoard& operator=(const GameBoard& other);
     ~GameBoard();
 
-    void initializeCards();
-    void positionCards();
-    void render();
-    void shuffleCards();
-    const std::vector<std::string>& getCurrentRoundAnimals() const { return currentRoundAnimals;}
+    friend std::ostream& operator<<(std::ostream& os, const GameBoard& gameBoard);
+public:
     sf::RenderWindow& getWindow();
     Card* getCardAtPosition(const sf::Vector2i& position);
-    friend std::ostream& operator<<(std::ostream& os, const GameBoard& gameBoard);
+    void initializeCards();
+    void positionCards();
+    void shuffleCards();
+    void render();
+    const std::vector<std::string>& getCurrentRoundAnimals() const {return currentRoundAnimals;}
 };
+
 #endif //GAMEBOARD_H

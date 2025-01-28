@@ -1,8 +1,6 @@
 #include "../headers/timer.h"
 #include <iostream>
 #include "../headers/gameexception.h"
-constexpr float TIMER_X_POS = 10.f;
-constexpr float TIMER_Y_POS = 10.f;
 
 Timer::Timer(int startTime) {
     timeRemaining = startTime;
@@ -18,10 +16,17 @@ Timer::Timer(int startTime) {
     clockSound.setVolume(35);
 
     timeText.setFont(font);
-    timeText.setCharacterSize(42);
-    timeText.setPosition(TIMER_X_POS, TIMER_Y_POS);
+    timeText.setCharacterSize(32);
 
+    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Timer");
+    sf::Vector2u windowSize = window.getSize();
+    float centerX = static_cast<float>(windowSize.x) / 2.f;
+    timeText.setPosition(centerX - 40.f, 130.f);
     clock.restart();
+}
+
+Timer::~Timer() {
+    std::cout << "Destructor called for Timer" << std::endl;
 }
 
 void Timer::update() {
@@ -58,7 +63,6 @@ void Timer::updateText() {
 void Timer::render(sf::RenderWindow& window) const {
     window.draw(timeText);
 }
-
 
 bool Timer::isTimeUp() const {
     return timeRemaining <= 0;

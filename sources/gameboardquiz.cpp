@@ -1,20 +1,23 @@
 #include "../headers/gameboardquiz.h"
 #include "../headers/gameexception.h"
+#include <iostream>
 
-GameBoardQuiz::GameBoardQuiz()
-= default;
+GameBoardQuiz::GameBoardQuiz() {
+    if (!font.loadFromFile("font/font.ttf")) {
+        throw FileNotFoundException("quiz font");
+    }
+    questionText.setFont(font);
+    questionText.setCharacterSize(24);
+    questionText.setFillColor(sf::Color(100, 100, 255));
+    questionText.setStyle(sf::Text::Bold);
+}
 
-GameBoardQuiz::GameBoardQuiz(const GameBoardQuiz& other) :
-    backgroundTexture(other.backgroundTexture),
-    backgroundSprite(other.backgroundSprite),
-    currentQuestion(other.currentQuestion),
-    font(other.font),
-    questionText(other.questionText),
-    optionTexts(other.optionTexts),
-    optionBoxes(other.optionBoxes)
-{}
-
-GameBoardQuiz::~GameBoardQuiz() = default;
+GameBoardQuiz::~GameBoardQuiz() {
+    if (quizWindow.isOpen()) {
+        quizWindow.close();
+    }
+    std::cout << "GameBoardQuiz destructor called!" << std::endl;
+}
 
 void GameBoardQuiz::createWindow() {
     if (!quizWindow.isOpen()) {
@@ -24,8 +27,8 @@ void GameBoardQuiz::createWindow() {
 
         sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
         sf::Vector2i position(
-    (static_cast<int>(desktop.width) - 1200) / 2,
-    (static_cast<int>(desktop.height) - 700) / 2
+            (static_cast<int>(desktop.width) - 1200) / 2,
+            (static_cast<int>(desktop.height) - 700) / 2
         );
 
         quizWindow.setPosition(position);
@@ -39,15 +42,6 @@ void GameBoardQuiz::createWindow() {
     float scaleX = static_cast<float>(quizWindow.getSize().x) /  static_cast<float>(backgroundTexture.getSize().x);
     float scaleY = static_cast<float>(quizWindow.getSize().y) /  static_cast<float>(backgroundTexture.getSize().y);
     backgroundSprite.setScale(scaleX, scaleY);
-
-    if (!font.loadFromFile("font/font.ttf")) {
-        throw FileNotFoundException("quiz font");
-    }
-
-    questionText.setFont(font);
-    questionText.setCharacterSize(24);
-    questionText.setFillColor(sf::Color(100, 100, 255));
-    questionText.setStyle(sf::Text::Bold);
 }
 
 void GameBoardQuiz::setCurrentQuestion(IQuestion* question) {
@@ -134,17 +128,4 @@ int GameBoardQuiz::getOptionAtPosition(const sf::Vector2i& position) const {
         }
     }
     return -1;
-}
-
-GameBoardQuiz& GameBoardQuiz::operator=(const GameBoardQuiz& other) {
-    if (this != &other) {
-        backgroundTexture = other.backgroundTexture;
-        backgroundSprite = other.backgroundSprite;
-        font = other.font;
-        questionText = other.questionText;
-        optionTexts = other.optionTexts;
-        optionBoxes = other.optionBoxes;
-        currentQuestion = other.currentQuestion;
-    }
-    return *this;
 }

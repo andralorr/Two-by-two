@@ -1,11 +1,21 @@
 #include "../headers/game.h"
 #include "../headers/gamemessage.h"
 #include "../headers/gameexception.h"
+#include "../headers/timer.h"
+#include "../headers/singleton.h"
 #include <iostream>
 
-Game::Game() : timer(120), isGameFinished(false){
+Game::Game() : isGameFinished(false) {
     isQuizActive = false;
     isGameOver = false;
+
+    Timer::init(120);
+}
+
+Game::~Game() {
+    Singleton<Timer,false>::destroyInstance();
+    Singleton<GameBoardQuiz>::destroyInstance();
+    Singleton<GameBoard>::destroyInstance();
 }
 
 void Game::run() {
@@ -26,8 +36,8 @@ void Game::addMessage(MessageType type, const std::string& assetPath) {
 }
 
 void Game::displayMessages() {
-    if (timer.isClockSoundPlaying()) {
-        timer.stopClockSound();
+    if (Timer::getInstance().isClockSoundPlaying()) {
+        Timer::getInstance().stopClockSound();
     }
     for (auto& message : messages) {
         message->display();
@@ -168,9 +178,9 @@ void Game::resetGameAfterWrongAnswer() {
 }
 
 void Game::update() {
-    timer.update();
+    Timer::getInstance().update();
 
-    if (timer.isTimeUp()) {
+    if (Timer::getInstance().isTimeUp()) {
         if (isQuizActive) {
             gameBoardQuiz.getWindowQuiz().close();
             isQuizActive = false;
@@ -241,7 +251,7 @@ void Game::render() {
     }
     gameBoard.getWindow().clear();
     gameBoard.render();
-    timer.render(gameBoard.getWindow());
+    Timer::getInstance().render(gameBoard.getWindow());
 
     if (isQuizActive) {
         gameBoardQuiz.render();
@@ -266,7 +276,7 @@ bool Game::allQuestionsAnsweredCorrectly() {
 }
 
 void Game::restartGame() {
-    timer.reset(120);
+    Timer::getInstance().reset(120);
     isQuizActive = false;
     isGameOver = false;
     firstFlippedCard = nullptr;

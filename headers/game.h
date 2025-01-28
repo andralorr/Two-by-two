@@ -1,17 +1,19 @@
+#ifndef GAME_H
+#define GAME_H
+
 #pragma once
 
 #include "gameboard.h"
 #include "gameboardquiz.h"
-#include "timer.h"
 #include "gamemessage.h"
 #include <vector>
 #include <memory>
 
 class Game {
 private:
-    GameBoard gameBoard;
-    GameBoardQuiz gameBoardQuiz;
-    Timer timer;
+    GameBoard& gameBoard = GameBoard::getInstance();
+    GameBoardQuiz& gameBoardQuiz = GameBoardQuiz::getInstance();
+
     bool isQuizActive;
     bool isGameOver;
     bool isGameFinished;
@@ -27,10 +29,6 @@ private:
     std::vector<std::string> correctlyAnsweredAnimals;
 
     std::unique_ptr<Card> copiedFirstCard;
-
-public:
-    Game();
-    void run();
     void update();
     void render();
     void restartGame();
@@ -53,4 +51,10 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Game& game);
 
     bool allQuestionsAnsweredCorrectly();
+public:
+    Game();
+    ~Game();
+    void run();
 };
+
+#endif //GAME_H
