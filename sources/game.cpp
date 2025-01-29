@@ -5,7 +5,7 @@
 #include "../headers/singleton.h"
 #include <iostream>
 
-Game::Game() : isGameFinished(false), timer(init_timer()) {
+Game::Game() : timer(init_timer()), isGameFinished(false) {
     isQuizActive = false;
     isGameOver = false;
 }
@@ -279,7 +279,6 @@ bool Game::allQuestionsAnsweredCorrectly() {
 }
 
 void Game::restartGame() {
-
     timer.reset(120);
     isQuizActive = false;
     isGameOver = false;
