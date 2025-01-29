@@ -11,7 +11,7 @@ class Timer : public Singleton<Timer, false> {
     friend class Singleton<Timer, false>;
 
 private:
-    Timer(int startTime);
+    explicit Timer(int startTime);
     int timeRemaining;
     sf::Font font;
     sf::Text timeText;
