@@ -279,6 +279,7 @@ bool Game::allQuestionsAnsweredCorrectly() {
 }
 
 void Game::restartGame() {
+
     timer.reset(120);
     isQuizActive = false;
     isGameOver = false;
