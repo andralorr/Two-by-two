@@ -6,6 +6,7 @@
 #include "gameboard.h"
 #include "gameboardquiz.h"
 #include "gamemessage.h"
+#include "timer.h"
 #include <vector>
 #include <memory>
 
@@ -13,6 +14,7 @@ class Game {
 private:
     GameBoard& gameBoard = GameBoard::getInstance();
     GameBoardQuiz& gameBoardQuiz = GameBoardQuiz::getInstance();
+    Timer& timer;
 
     bool isQuizActive;
     bool isGameOver;
@@ -54,6 +56,7 @@ private:
 public:
     Game();
     ~Game();
+    Timer& init_timer();
     void run();
 };
 
