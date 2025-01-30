@@ -54,7 +54,6 @@ private:
     friend std::ostream& operator<<(std::ostream& os, const Game& game);
 
     bool allQuestionsAnsweredCorrectly();
-    Timer& init_timer();
 
 public:
     Game();
