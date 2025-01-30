@@ -53,10 +53,11 @@ private:
     friend std::ostream& operator<<(std::ostream& os, const Game& game);
 
     bool allQuestionsAnsweredCorrectly();
+    Timer& init_timer();
+
 public:
     Game();
     ~Game();
-    Timer& init_timer();
     void run();
 };
 
