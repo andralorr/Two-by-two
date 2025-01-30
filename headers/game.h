@@ -15,6 +15,7 @@ private:
     GameBoard& gameBoard = GameBoard::getInstance();
     GameBoardQuiz& gameBoardQuiz = GameBoardQuiz::getInstance();
     Timer& timer;
+    Timer& init_timer();
 
     bool isQuizActive;
     bool isGameOver;
@@ -56,7 +57,6 @@ private:
 public:
     Game();
     ~Game();
-    Timer& init_timer();
     void run();
 };
 
